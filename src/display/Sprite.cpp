@@ -42,3 +42,13 @@ bool Sprite::initFromBMP(const std::string& filename, SDL_Renderer* renderer)
 
     return true;
 }
+
+int Sprite::getW() const
+{
+    return w_;
+}
+
+int Sprite::getH() const
+{
+    return h_;
+}

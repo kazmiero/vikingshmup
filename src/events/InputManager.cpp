@@ -32,6 +32,16 @@ bool InputManager::eventLoop()
         // mouse left click
 		if (SDL_GetMouseState(NULL,NULL)&SDL_BUTTON(1))
             events_.push_back(InputEvent(Shoot));
+
+        if (event.type == SDL_KEYDOWN)
+        {
+            SDL_Keycode keyPressed = event.key.keysym.sym;
+            if (keyPressed == SDLK_ESCAPE)
+            {
+                events_.push_back(InputEvent(Quit));
+                return false;
+            }
+        }
     }
 
     return true;

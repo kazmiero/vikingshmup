@@ -4,6 +4,10 @@
 #include <vector>
 #include "InputEvent.h"
 
+/// @file InputManager.h
+
+/// @class InputManager
+/// Do the game's event loop
 class InputManager
 {
     public:

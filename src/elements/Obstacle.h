@@ -13,6 +13,8 @@ class Obstacle : public Element
         Obstacle();
         Obstacle(const AABB& aabb, const std::string &spriteName);
         virtual ~Obstacle();
+
+        virtual void move();
     protected:
     private:
 };

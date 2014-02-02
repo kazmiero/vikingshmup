@@ -18,6 +18,9 @@ class Element
         const AABB& getAABB() const;
         const std::string& getSpriteName() const;
 
+        /// move if it is possible, else do nothing
+        virtual void move() = 0;
+
     protected:
         AABB aabb_;
         std::string spriteName_;

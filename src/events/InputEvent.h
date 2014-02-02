@@ -1,10 +1,14 @@
 #ifndef INPUTEVENT_H
 #define INPUTEVENT_H
 
+/// @file InputEvent.h
+
 namespace events
 {
-    typedef enum {Quit, MovePlayer, Shoot} InputEventId;
+    typedef enum {Quit, Pause, MovePlayer, Shoot} InputEventId;
 
+/// @class InputEvent
+/// An event triggered by the mouse, and eventually sent to the world (MovePlayer, Shoot)
 class InputEvent
 {
     public:

@@ -14,6 +14,8 @@ class AABB
         AABB(int x, int y, int w, int h);
         virtual ~AABB();
 
+        void setPos(int x, int y);
+        void move(int dx, int dy);
         const SDL_Rect* get() const;
     protected:
     private:

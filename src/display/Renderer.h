@@ -22,7 +22,7 @@ class Renderer
         void initSprites(const std::string& spritesDir);
 
         void renderSprite(const SDL_Rect* AABB, const std::string& spriteName);
-        const std::map<std::string, Sprite*> getSprites() const;
+        const std::map<std::string, Sprite*>& getSprites() const;
 
     private:
         SDL_Renderer* sdlRenderer_;

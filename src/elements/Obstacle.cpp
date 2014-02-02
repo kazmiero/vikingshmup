@@ -13,3 +13,8 @@ Obstacle::~Obstacle()
 {
     //dtor
 }
+
+void Obstacle::move()
+{
+    // do nothing !
+}

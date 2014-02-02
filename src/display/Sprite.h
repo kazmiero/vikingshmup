@@ -16,6 +16,8 @@ class Sprite
 
         bool initFromBMP(const std::string& filename, SDL_Renderer* renderer);
         SDL_Texture* get() const;
+        int getW() const;
+        int getH() const;
 
     private:
         SDL_Texture* texture_;

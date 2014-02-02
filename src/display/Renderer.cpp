@@ -26,6 +26,7 @@ void Renderer::initSprites(const std::string& spritesDir)
     spriteNames.push_back("player");
     spriteNames.push_back("enemy");
     spriteNames.push_back("bullet");
+    spriteNames.push_back("obstacle");
 
 
     for (Uint32 i = 0; i < spriteNames.size(); i++)
@@ -40,7 +41,7 @@ void Renderer::renderSprite(const SDL_Rect* AABB, const std::string& spriteName)
     SDL_RenderCopy(sdlRenderer_, sprites_[spriteName]->get(), NULL, AABB);
 }
 
-const std::map<std::string, Sprite*> Renderer::getSprites() const
+const std::map<std::string, Sprite*>& Renderer::getSprites() const
 {
     return sprites_;
 }

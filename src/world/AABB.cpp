@@ -21,6 +21,18 @@ AABB::~AABB()
     //dtor
 }
 
+void AABB::setPos(int x, int y)
+{
+    rect_.x = x;
+    rect_.y = y;
+}
+
+void AABB::move(int dx, int dy)
+{
+    rect_.x += dx;
+    rect_.y += dy;
+}
+
 const SDL_Rect* AABB::get() const
 {
     return &rect_;

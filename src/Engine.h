@@ -2,6 +2,9 @@
 #define ENGINE_H
 
 #include "display/Renderer.h"
+#include "world/World.h"
+#include "time/Timer.h"
+#include "events/InputManager.h"
 
 /// @file Engine.h
 
@@ -17,9 +20,18 @@ class Engine
 
         void dummyDrawing();
 
+        void gameLoop();
+        void renderWorld();
+        void pushCommands();
+
     private:
         SDL_Window* gameWindow_;
         Renderer* renderer_;
+        World* world_;
+        Timer* fpsTimer_;
+        InputManager* inputManager_;
+
+        const float fps_;
 
 };
 

@@ -10,7 +10,7 @@
 class Player : public Entity
 {
     public:
-        Player();
+        Player(const AABB& aabb, const std::string& spriteName, float maxVelocity);
         virtual ~Player();
     protected:
     private:

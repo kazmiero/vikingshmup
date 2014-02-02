@@ -3,6 +3,10 @@
 
 #include <SDL2/SDL.h>
 
+/// @file Timer.h
+
+/// @class Timer
+/// Basic class for time management. It works like a chronometer and provides the waiting time (according to the defined frequency_)
 class Timer
 {
     public:

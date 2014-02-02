@@ -23,3 +23,19 @@ Entity::~Entity()
 {
     //dtor
 }
+
+void Entity::move()
+{
+    aabb_.move(dx_, dy_);
+}
+
+void Entity::setSpeed(int dx, int dy)
+{
+    dx_ = dx;
+    dy_ = dy;
+}
+
+float Entity::getMaxVelocity() const
+{
+    return maxVelocity_;
+}
