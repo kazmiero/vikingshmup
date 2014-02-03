@@ -21,6 +21,7 @@ World::~World()
 void World::setupLevel()
 {
     camera_ = AABB(0,0,cameraWidth_,cameraHeight_);
+    collisionHandler_ = new CollisionHandler(camera_);
 
     createObstacle(30, 30);
     createObstacle(100, 200);
@@ -63,15 +64,30 @@ void World::update()
     {
         elements_[elementIndex]->move();
     }
-
-    // set player speed to 0 (no inerty)
-    // Todo : add an inerty for several frames/seconds
-    player_->setSpeed(Vector2f());
 }
 
 void World::doCollisionCheck()
 {
+    bool playerCollision = false;
+    for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
+    {
+        if (elements_[elementIndex] != player_)
+        {
+            playerCollision = playerCollision
+                || collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
+        }
+    }
+    playerCollision = playerCollision
+        || collisionHandler_->cameraCollisionCheck(player_->getAABB());
 
+
+    if (playerCollision)
+    {
+        player_->back();
+    }
+    // set player speed to 0 (no inerty)
+    // Todo : add an inerty for several frames/seconds
+    player_->setSpeed(Vector2f());
 }
 
 void World::addInputEvent(events::InputEvent event)

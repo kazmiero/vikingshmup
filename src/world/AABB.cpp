@@ -41,3 +41,18 @@ SDL_Rect AABB::getRect() const
 
     return rect;
 }
+
+const Vector2f& AABB::getPos() const
+{
+    return pos_;
+}
+
+float AABB::getW() const
+{
+    return w_;
+}
+
+float AABB::getH() const
+{
+    return h_;
+}

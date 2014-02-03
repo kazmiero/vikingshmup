@@ -10,3 +10,8 @@ Player::~Player()
 {
     //dtor
 }
+
+void Player::back()
+{
+    aabb_.move(dp_*-1.0f);
+}

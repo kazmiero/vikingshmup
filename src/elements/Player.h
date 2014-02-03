@@ -12,6 +12,8 @@ class Player : public Entity
     public:
         Player(const AABB& aabb, const std::string& spriteName, float maxVelocity);
         virtual ~Player();
+
+        void back();
     protected:
     private:
 };

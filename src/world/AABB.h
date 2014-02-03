@@ -18,6 +18,10 @@ class AABB
         void setPos(Vector2f pos);
         void move(Vector2f dp);
         SDL_Rect getRect() const;
+
+        const Vector2f& getPos() const;
+        float getW() const;
+        float getH() const;
     protected:
     private:
         Vector2f pos_;
