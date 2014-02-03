@@ -1,19 +1,19 @@
 #include "AABB.h"
+#include <cmath>
 
 AABB::AABB()
 {
-    rect_.x = 0;
-    rect_.y = 0;
-    rect_.w = 0;
-    rect_.h = 0;
+    pos_ = Vector2f();
+    w_ = 0.0f;
+    h_ = 0.0f;
 }
 
 AABB::AABB(int x, int y, int w, int h)
 {
-    rect_.x = x;
-    rect_.y = y;
-    rect_.w = w;
-    rect_.h = h;
+    pos_.x_ = float(x);
+    pos_.y_ = float(y);
+    w_ = float(w);
+    h_ = float(h);
 }
 
 AABB::~AABB()
@@ -21,19 +21,23 @@ AABB::~AABB()
     //dtor
 }
 
-void AABB::setPos(int x, int y)
+void AABB::setPos(Vector2f pos)
 {
-    rect_.x = x;
-    rect_.y = y;
+    pos_ = pos;
 }
 
-void AABB::move(int dx, int dy)
+void AABB::move(Vector2f dp)
 {
-    rect_.x += dx;
-    rect_.y += dy;
+    pos_ += dp;
 }
 
-const SDL_Rect* AABB::get() const
+SDL_Rect AABB::getRect() const
 {
-    return &rect_;
+    SDL_Rect rect;
+    rect.h = (int) h_;
+    rect.w = (int) w_;
+    rect.x = (int) round(pos_.x_);
+    rect.y = (int) round(pos_.y_);
+
+    return rect;
 }

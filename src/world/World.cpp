@@ -1,5 +1,6 @@
 #include "World.h"
 #include <iostream>
+#include <cmath>
 
 World::World(float fps) :
     worldWidth_(600),
@@ -31,7 +32,7 @@ void World::setupLevel()
 void World::spawnPlayer(int x, int y)
 {
     AABB playerAABB = spritesAABB_["player"];
-    playerAABB.setPos(x,y);
+    playerAABB.setPos(Vector2f(x,y));
     player_ = new Player(playerAABB, "player", 20.0f);
     elements_.push_back(player_);
 
@@ -41,7 +42,7 @@ void World::spawnPlayer(int x, int y)
 void World::createObstacle(int x, int y)
 {
     AABB aabb = spritesAABB_["obstacle"];
-    aabb.setPos(x, y);
+    aabb.setPos(Vector2f(x,y));
     elements_.push_back(new Obstacle(aabb, "obstacle"));
 }
 
@@ -52,15 +53,20 @@ void World::update()
     {
         if (events_[i].id_ == events::MovePlayer)
         {
-            player_->setSpeed((int) (events_[i].x_*playerRelativeVelocity_), (int) (events_[i].y_*playerRelativeVelocity_));
+            player_->setSpeed(Vector2f(events_[i].x_,events_[i].y_)*playerRelativeVelocity_);
         }
     }
+    clearEvents();
 
     // update positions
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
         elements_[elementIndex]->move();
     }
+
+    // set player speed to 0 (no inerty)
+    // Todo : add an inerty for several frames/seconds
+    player_->setSpeed(Vector2f());
 }
 
 void World::doCollisionCheck()

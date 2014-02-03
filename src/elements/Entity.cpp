@@ -2,8 +2,7 @@
 
 Entity::Entity() :
     Element(),
-    dx_(0),
-    dy_(0),
+    dp_(Vector2f()),
     velocity_(0.0f),
     maxVelocity_(0.0f)
 {
@@ -12,8 +11,7 @@ Entity::Entity() :
 
 Entity::Entity(const AABB& aabb, const std::string &spriteName, float maxVelocity) :
     Element(aabb, spriteName),
-    dx_(0),
-    dy_(0),
+    dp_(Vector2f()),
     velocity_(0.0f),
     maxVelocity_(maxVelocity)
 {
@@ -26,13 +24,18 @@ Entity::~Entity()
 
 void Entity::move()
 {
-    aabb_.move(dx_, dy_);
+    aabb_.move(dp_);
 }
 
-void Entity::setSpeed(int dx, int dy)
+void Entity::setSpeed(Vector2f dp)
 {
-    dx_ = dx;
-    dy_ = dy;
+    dp_ = dp;
+}
+
+void Entity::setSpeed(float dx, float dy)
+{
+    dp_.x_ = dx;
+    dp_.y_ = dy;
 }
 
 float Entity::getMaxVelocity() const

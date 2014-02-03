@@ -14,12 +14,13 @@ class Entity : public Element
         Entity(const AABB& aabb, const std::string &spriteName, float maxVelocity);
         virtual ~Entity();
 
-        void setSpeed(int dx, int dy);
+        void setSpeed(Vector2f dp);
+        void setSpeed(float dx, float dy);
         float getMaxVelocity() const;
 
         virtual void move();
     protected:
-        int dx_, dy_;
+        Vector2f dp_;
         float velocity_;        // pixels per second
         float maxVelocity_;     // pixels per second
     private:

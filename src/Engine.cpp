@@ -117,7 +117,8 @@ void Engine::renderWorld()
     for (Uint32 elementIndex = 0; elementIndex < world_->getElements().size(); elementIndex++)
     {
         const Element* element = world_->getElements()[elementIndex];
-        renderer_->renderSprite(element->getAABB().get(), element->getSpriteName());
+        SDL_Rect rect = element->getAABB().getRect();
+        renderer_->renderSprite(&rect, element->getSpriteName());
     }
     renderer_->sendToFramebuffer();
 }
