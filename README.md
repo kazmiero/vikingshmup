@@ -6,5 +6,5 @@ This project is my first attempt to program a video game. It is a little *shoot 
 
 The project has only been tested on linux, so has the Makefile.
 You'll need to install SDL2 development files on your distribution.
-When you have cloned the repository, do `make setup` to create all needed subidrectories. Then `make` should work.
+When you have cloned the repository, do `make setup` to create all needed subdirectories. Then `make` should work.
 
