@@ -6,7 +6,7 @@
 class CollisionHandler
 {
     public:
-        CollisionHandler(const AABB& cameraAABB);
+        CollisionHandler();
         virtual ~CollisionHandler();
 
         /// collision between 2 elements given their AABBs
@@ -15,10 +15,7 @@ class CollisionHandler
         bool isInCamera(const AABB& aabb);
         bool cameraCollisionCheck(const AABB& aabb);
 
-        void setCameraAABB(const AABB& cameraAABB);
-
     private:
-        AABB cameraAABB_;
 };
 
 #endif // COLLISIONHANDLER_H

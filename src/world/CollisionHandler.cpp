@@ -1,7 +1,6 @@
 #include "CollisionHandler.h"
 
-CollisionHandler::CollisionHandler(const AABB& cameraAABB) :
-    cameraAABB_(cameraAABB)
+CollisionHandler::CollisionHandler()
 {
     //ctor
 }
@@ -13,20 +12,20 @@ CollisionHandler::~CollisionHandler()
 
 bool CollisionHandler::isInCamera(const AABB& aabb)
 {
-    return  aabb.getPos().x_ + aabb.getW() >= cameraAABB_.getPos().x_
-            && aabb.getPos().x_ <= cameraAABB_.getPos().x_ + cameraAABB_.getW()
-            && aabb.getPos().y_ + aabb.getH() >= cameraAABB_.getPos().y_
-            && aabb.getPos().y_ <= cameraAABB_.getPos().y_ + cameraAABB_.getH();
+    return  aabb.getPos().x_ + aabb.getW() >= AABB::camera.getPos().x_
+            && aabb.getPos().x_ <= AABB::camera.getPos().x_ + AABB::camera.getW()
+            && aabb.getPos().y_ + aabb.getH() >= AABB::camera.getPos().y_
+            && aabb.getPos().y_ <= AABB::camera.getPos().y_ + AABB::camera.getH();
 }
 
 bool CollisionHandler::cameraCollisionCheck(const AABB& aabb)
 {
-    Vector2f relativePos = aabb.getPos() - cameraAABB_.getPos();
+    Vector2f relativePos = aabb.getPos() - AABB::camera.getPos();
 
     return  relativePos.x_ < 0
-            || relativePos.x_ + aabb.getW() > cameraAABB_.getW()
+            || relativePos.x_ + aabb.getW() > AABB::camera.getW()
             || relativePos.y_ < 0
-            || relativePos.y_ + aabb.getH() > cameraAABB_.getH();
+            || relativePos.y_ + aabb.getH() > AABB::camera.getH();
 }
 
 bool CollisionHandler::twoAABBCollisionCheck(const AABB& aabb1, const AABB& aabb2)
@@ -37,9 +36,4 @@ bool CollisionHandler::twoAABBCollisionCheck(const AABB& aabb1, const AABB& aabb
              || aabb2.getPos().y_ > aabb1.getPos().y_ + aabb1.getH()
              || aabb2.getPos().y_ + aabb2.getH() < aabb1.getPos().y_
              );
-}
-
-void CollisionHandler::setCameraAABB(const AABB& cameraAABB)
-{
-    cameraAABB_ = cameraAABB;
 }

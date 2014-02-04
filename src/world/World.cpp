@@ -20,8 +20,8 @@ World::~World()
 
 void World::setupLevel()
 {
-    camera_ = AABB(0,0,cameraWidth_,cameraHeight_);
-    collisionHandler_ = new CollisionHandler(camera_);
+    AABB::camera = AABB(0,0,cameraWidth_,cameraHeight_);
+    collisionHandler_ = new CollisionHandler();
 
     createObstacle(30, 30);
     createObstacle(100, 200);

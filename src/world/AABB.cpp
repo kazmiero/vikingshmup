@@ -34,10 +34,12 @@ void AABB::move(Vector2f dp)
 SDL_Rect AABB::getRect() const
 {
     SDL_Rect rect;
+    Vector2f relativePos = pos_ - AABB::camera.getPos();
+
     rect.h = (int) h_;
     rect.w = (int) w_;
-    rect.x = (int) round(pos_.x_);
-    rect.y = (int) round(pos_.y_);
+    rect.x = (int) round(relativePos.x_);
+    rect.y = (int) round(relativePos.y_);
 
     return rect;
 }
@@ -56,3 +58,5 @@ float AABB::getH() const
 {
     return h_;
 }
+
+AABB AABB::camera = AABB();

@@ -43,7 +43,6 @@ class World
         const float fps_;
 
         float playerRelativeVelocity_;
-        AABB camera_;
 
         // elements
         std::vector<Element*> elements_;

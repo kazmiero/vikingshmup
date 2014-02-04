@@ -22,6 +22,8 @@ class AABB
         const Vector2f& getPos() const;
         float getW() const;
         float getH() const;
+
+        static AABB camera;
     protected:
     private:
         Vector2f pos_;

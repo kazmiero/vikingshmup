@@ -107,7 +107,7 @@ void Engine::gameLoop()
         Uint32 delay = fpsTimer_->getWaitingTime();
 
         SDL_Delay(delay);
-        std::cout << delay << std::endl;
+        //std::cout << delay << std::endl;
     }
 }
 
