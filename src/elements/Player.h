@@ -14,6 +14,7 @@ class Player : public Entity
         virtual ~Player();
 
         void back();
+        void scroll(Vector2f cameraScrolling);
     protected:
     private:
 };

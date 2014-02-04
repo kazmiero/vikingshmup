@@ -14,6 +14,7 @@ class CollisionHandler
         ///
         bool isInCamera(const AABB& aabb);
         bool cameraCollisionCheck(const AABB& aabb);
+        bool scrollingCollisionCheck(const AABB& aabb);
 
     private:
 };

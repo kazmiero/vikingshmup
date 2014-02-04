@@ -95,6 +95,7 @@ void Engine::gameLoop()
         // world & physics
         world_->update();
         world_->doCollisionCheck();
+        world_->scroll();
 
         // graphics
         renderWorld();
@@ -114,9 +115,9 @@ void Engine::gameLoop()
 void Engine::renderWorld()
 {
     renderer_->clear();
-    for (Uint32 elementIndex = 0; elementIndex < world_->getElements().size(); elementIndex++)
+    for (Uint32 elementIndex = 0; elementIndex < world_->getElementsToDraw().size(); elementIndex++)
     {
-        const Element* element = world_->getElements()[elementIndex];
+        const Element* element = world_->getElementsToDraw()[elementIndex];
         SDL_Rect rect = element->getAABB().getRect();
         renderer_->renderSprite(&rect, element->getSpriteName());
     }

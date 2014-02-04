@@ -15,3 +15,8 @@ void Player::back()
 {
     aabb_.move(dp_*-1.0f);
 }
+
+void Player::scroll(Vector2f cameraScrolling)
+{
+    aabb_.move(cameraScrolling);
+}

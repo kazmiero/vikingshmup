@@ -37,3 +37,10 @@ bool CollisionHandler::twoAABBCollisionCheck(const AABB& aabb1, const AABB& aabb
              || aabb2.getPos().y_ + aabb2.getH() < aabb1.getPos().y_
              );
 }
+
+bool CollisionHandler::scrollingCollisionCheck(const AABB& aabb)
+{
+    Vector2f relativePos = aabb.getPos() - AABB::camera.getPos();
+
+    return relativePos.y_ + aabb.getH() >= AABB::camera.getH();
+}

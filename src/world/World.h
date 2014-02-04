@@ -23,6 +23,7 @@ class World
 
         void update();
         void doCollisionCheck();
+        void scroll();
 
         void spawnPlayer(int x, int y);
         void createObstacle(int x, int y);
@@ -32,6 +33,7 @@ class World
 
         void setSpritesAABB(const std::map<std::string,AABB>& spritesAABB);
         const std::vector<Element*>& getElements();
+        const std::vector<const Element*>& getElementsToDraw();
         const int getCameraWidth();
         const int getCameraHeight();
 
@@ -41,11 +43,15 @@ class World
         const int worldWidth_, worldHeight_;
         const int cameraWidth_, cameraHeight_;
         const float fps_;
+        const float scrollingSpeed_;    // pixels per second
 
-        float playerRelativeVelocity_;
+        float playerRelativeVelocity_;  // pixels per frame
+        Vector2f cameraScrolling_;      // pixels per frame
+        bool isScrolling_;
 
         // elements
         std::vector<Element*> elements_;
+        std::vector<const Element*> elementsToDraw_;
         Player* player_;
 
         // events
