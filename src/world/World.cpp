@@ -8,7 +8,7 @@ World::World(float fps) :
     cameraWidth_(600),
     cameraHeight_(600),
     fps_(fps),
-    scrollingSpeed_(30),
+    scrollingSpeed_(20.0f),
     isScrolling_(true)
 {
     cameraScrolling_ = Vector2f(0.0f,-scrollingSpeed_/fps_);
@@ -84,16 +84,17 @@ void World::update()
     }
 }
 
-void World::doCollisionCheck()
+bool World::doCollisionCheck()
 {
     elementsToDraw_.clear();
 
     bool playerCollision = false;
+    bool playerCollisionWithObstacle = false;
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
         if (elements_[elementIndex] != player_)
         {
-            playerCollision = playerCollision
+            playerCollisionWithObstacle = playerCollisionWithObstacle
                 || collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
 
             if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
@@ -101,7 +102,7 @@ void World::doCollisionCheck()
         }
     }
 
-    playerCollision = playerCollision
+    playerCollision = playerCollisionWithObstacle
         || collisionHandler_->cameraCollisionCheck(player_->getAABB());
 
     if (playerCollision)
@@ -110,6 +111,11 @@ void World::doCollisionCheck()
         bool scrollingCollision = collisionHandler_->scrollingCollisionCheck(player_->getAABB());
         if (isScrolling_ && scrollingCollision)
             player_->scroll(cameraScrolling_);
+        if (isScrolling_ && scrollingCollision && playerCollisionWithObstacle)
+        {
+            std::cout << "DEAD" << std::endl;
+            return true;
+        }
     }
     else if (isScrolling_)
         player_->scroll(cameraScrolling_);
@@ -118,6 +124,8 @@ void World::doCollisionCheck()
     player_->setSpeed(Vector2f());
 
     elementsToDraw_.push_back(player_);
+
+    return false;
 }
 
 void World::addInputEvent(events::InputEvent event)

@@ -22,7 +22,8 @@ class World
         void setupLevel();
 
         void update();
-        void doCollisionCheck();
+        /// @return true if the player is dead
+        bool doCollisionCheck();
         void scroll();
 
         void spawnPlayer(int x, int y);

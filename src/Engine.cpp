@@ -94,7 +94,8 @@ void Engine::gameLoop()
 
         // world & physics
         world_->update();
-        world_->doCollisionCheck();
+        if (world_->doCollisionCheck())
+            return;
         world_->scroll();
 
         // graphics
