@@ -11,6 +11,32 @@ InputManager::~InputManager()
     //dtor
 }
 
+events::InputEvent InputManager::menuEventLoop()
+{
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event))
+    {
+        // event handling
+		if (event.type == SDL_QUIT)
+			return events::InputEvent(events::Quit);
+
+        if (event.type == SDL_KEYDOWN)
+        {
+            SDL_Keycode keyPressed = event.key.keysym.sym;
+
+            if (keyPressed == SDLK_ESCAPE)
+                return events::InputEvent(events::Quit);
+            else if (keyPressed == SDLK_RETURN)
+                return events::InputEvent(events::SelectMenu);
+            else if (keyPressed == SDLK_UP ||keyPressed == SDLK_DOWN)
+                return events::InputEvent(events::ChangeMenu);
+        }
+    }
+
+    return events::InputEvent(events::None);
+}
+
 bool InputManager::eventLoop()
 {
     using namespace events;

@@ -2,21 +2,71 @@
 #include <iostream>
 
 Engine::Engine() :
+    state_(Title),
     fps_(60.0f)
 {
     world_ = new World(fps_);
     initSDL();
-    world_->setupLevel();
     fpsTimer_ = new Timer(fps_);
     inputManager_ = new InputManager();
 
-    //dummyDrawing();
-    gameLoop();
+    mainLoop();
 }
 
 Engine::~Engine()
 {
     //dtor
+}
+
+void Engine::mainLoop()
+{
+    while(true)
+    {
+        TitleMenuItem state = titleMenu();
+        if (state == Start)
+            play();
+        else if (state == Exit)
+            return;
+    }
+}
+
+TitleMenuItem Engine::titleMenu()
+{
+    TitleMenuItem selectedMenuItem = Start; // 0 for start, 1 for exit
+
+    while(true)
+    {
+        fpsTimer_->reset();
+        fpsTimer_->start();
+
+        events::InputEvent event = inputManager_->menuEventLoop();
+        if (event.id_ == events::Quit)
+            return Exit;
+        else if (event.id_ == events::SelectMenu)
+            return selectedMenuItem;
+        else if (event.id_ == events::ChangeMenu)
+        {
+            if (selectedMenuItem == Exit)
+                selectedMenuItem = Start;
+            else
+                selectedMenuItem = Exit;
+        }
+
+        renderTitleMenu(selectedMenuItem);
+
+        fpsTimer_->pause();
+        Uint32 delay = fpsTimer_->getWaitingTime();
+        SDL_Delay(delay);
+    }
+}
+
+void Engine::play()
+{
+    world_->setupLevel();
+    gameLoop();
+
+    // Todo: replace this by something clean
+    world_->clearElements();
 }
 
 bool Engine::initSDL()
@@ -45,7 +95,6 @@ bool Engine::initSDL()
 	renderer_ = new Renderer(gameWindow_, world_->getCameraWidth(), world_->getCameraHeight());
 
 	// create spritesAABB map
-	SDL_Delay(10);
 	std::map<std::string,AABB> spritesAABB;
     for (std::map<std::string,Sprite*>::const_iterator it = renderer_->getSprites().begin(); it != renderer_->getSprites().end(); ++it)
     {
@@ -125,12 +174,36 @@ void Engine::renderWorld()
     renderer_->sendToFramebuffer();
 }
 
+void Engine::renderTitleMenu(TitleMenuItem selectedMenuItem)
+{
+    renderer_->clear();
+
+    const Sprite* start = renderer_->getMenuSprites().at("start");
+    if (selectedMenuItem == Start)
+        SDL_SetTextureColorMod(start->get(), 255, 0, 0);
+    else
+        SDL_SetTextureColorMod(start->get(), 255, 255, 255);
+    SDL_Rect rect;
+    rect.x = 100, rect.y = 200, rect.h = start->getH(), rect.w = start->getW();
+    renderer_->renderMenuSprite(&rect,"start");
+
+    const Sprite* exit = renderer_->getMenuSprites().at("exit");
+    if (selectedMenuItem == Exit)
+        SDL_SetTextureColorMod(exit->get(), 255, 0, 0);
+    else
+        SDL_SetTextureColorMod(exit->get(), 255, 255, 255);
+    rect.x = 100, rect.y = 300, rect.h = exit->getH(), rect.w = exit->getW();
+    renderer_->renderMenuSprite(&rect, "exit");
+
+    renderer_->sendToFramebuffer();
+}
+
 void Engine::pushCommands()
 {
     for (Uint32 i = 0; i < inputManager_->getEvents().size(); i++)
     {
         events::InputEvent event = inputManager_->getEvents()[i];
-        if (event.id_ != (events::Quit | events::Pause))
+        if (event.id_ == (events::Quit | events::Pause | events::None))
             world_->addInputEvent(event);
     }
 }

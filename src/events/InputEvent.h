@@ -5,7 +5,7 @@
 
 namespace events
 {
-    typedef enum {Quit, Pause, MovePlayer, Shoot} InputEventId;
+    typedef enum {None, Quit, SelectMenu, ChangeMenu, Pause, MovePlayer, Shoot} InputEventId;
 
 /// @class InputEvent
 /// An event triggered by the mouse, and eventually sent to the world (MovePlayer, Shoot)

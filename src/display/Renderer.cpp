@@ -10,6 +10,7 @@ Renderer::Renderer(SDL_Window* window, int logicalWidth, int logicalHeight)
     init();
 
     initSprites("../ressource/sprite");
+    initMenuSprites("../ressource/menus");
 }
 
 Renderer::~Renderer()
@@ -28,10 +29,30 @@ void Renderer::initSprites(const std::string& spritesDir)
     spriteNames.push_back("bullet");
     spriteNames.push_back("obstacle");
 
+    SDL_Color transparencyColor;
+    transparencyColor.r = 0, transparencyColor.g = 255, transparencyColor.b = 255, transparencyColor.a = 255;
 
     for (Uint32 i = 0; i < spriteNames.size(); i++)
     {
-        sprites_[spriteNames[i]] = new Sprite(spritesDir+"/"+spriteNames[i], sdlRenderer_);
+        sprites_[spriteNames[i]] = new Sprite(spritesDir+"/"+spriteNames[i], "bmp", transparencyColor, sdlRenderer_);
+        std::cout << "Successfully loaded " << spriteNames[i] << std::endl;
+    }
+}
+
+void Renderer::initMenuSprites(const std::string& menuSpritesDir)
+{
+    // Todo : replace thus ugly hardcode
+    std::vector<std::string> spriteNames;
+    spriteNames.push_back("start");
+    spriteNames.push_back("exit");
+    spriteNames.push_back("continue");
+
+    SDL_Color transparencyColor;
+    transparencyColor.r = 0, transparencyColor.g = 0, transparencyColor.b = 0, transparencyColor.a = 0;
+
+    for (Uint32 i = 0; i < spriteNames.size(); i++)
+    {
+        menuSprites_[spriteNames[i]] = new Sprite(menuSpritesDir+"/"+spriteNames[i], "png", transparencyColor, sdlRenderer_);
         std::cout << "Successfully loaded " << spriteNames[i] << std::endl;
     }
 }
@@ -41,9 +62,19 @@ void Renderer::renderSprite(const SDL_Rect* AABB, const std::string& spriteName)
     SDL_RenderCopy(sdlRenderer_, sprites_[spriteName]->get(), NULL, AABB);
 }
 
+void Renderer::renderMenuSprite(const SDL_Rect* AABB, const std::string& spriteName)
+{
+    SDL_RenderCopy(sdlRenderer_, menuSprites_[spriteName]->get(), NULL, AABB);
+}
+
 const std::map<std::string, Sprite*>& Renderer::getSprites() const
 {
     return sprites_;
+}
+
+const std::map<std::string, Sprite*>& Renderer::getMenuSprites() const
+{
+    return menuSprites_;
 }
 
 void Renderer::init()

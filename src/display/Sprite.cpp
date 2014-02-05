@@ -1,12 +1,14 @@
 #include "Sprite.h"
 #include <iostream>
+#include <SDL2/SDL_image.h>
 
-Sprite::Sprite(const std::string& name, SDL_Renderer* renderer)
+Sprite::Sprite(const std::string& name, const std::string& type, SDL_Color transparencyColor, SDL_Renderer* renderer)
     : name_(name)
+    , imgType_(type)
 {
-    std::string BMPfilename = name + ".bmp";
+    std::string filename = name_+"."+imgType_;
 
-    initFromBMP(BMPfilename, renderer);
+    initFromFile(filename, transparencyColor, renderer);
 }
 
 Sprite::~Sprite()
@@ -19,16 +21,16 @@ SDL_Texture* Sprite::get() const
     return texture_;
 }
 
-bool Sprite::initFromBMP(const std::string& filename, SDL_Renderer* renderer)
+bool Sprite::initFromFile(const std::string& filename, SDL_Color transparencyColor, SDL_Renderer* renderer)
 {
-    SDL_Surface* surface = SDL_LoadBMP(filename.c_str());
+    SDL_Surface* surface = IMG_Load(filename.c_str());
     if (surface == NULL)
     {
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
     // set color key for transparency
-	Uint32 colorKey = SDL_MapRGB(surface->format, 0, 0xFF, 0xFF);
+	Uint32 colorKey = SDL_MapRGB(surface->format, transparencyColor.r, transparencyColor.g, transparencyColor.b);
 	SDL_SetColorKey(surface, SDL_RLEACCEL | SDL_TRUE, colorKey);
     w_ = surface->w;
     h_ = surface->h;

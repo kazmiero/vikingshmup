@@ -30,6 +30,7 @@ class World
         void createObstacle(int x, int y);
 
         void clearEvents();
+        void clearElements();
         void addInputEvent(events::InputEvent event);
 
         void setSpritesAABB(const std::map<std::string,AABB>& spritesAABB);

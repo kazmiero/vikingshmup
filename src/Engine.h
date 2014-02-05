@@ -10,6 +10,9 @@
 
 /// @class Engine
 /// Game engine : top-level class managing the game experience
+typedef enum {Playing, Title, Paused} GameState;
+typedef enum {Start, Exit} TitleMenuItem;
+
 class Engine
 {
     public:
@@ -20,9 +23,16 @@ class Engine
 
         void dummyDrawing();
 
+        void mainLoop();
+
+        void play();
+        TitleMenuItem titleMenu();
+
         void gameLoop();
         void renderWorld();
         void pushCommands();
+
+        void renderTitleMenu(TitleMenuItem selectedMenuItem);
 
     private:
         SDL_Window* gameWindow_;
@@ -31,8 +41,8 @@ class Engine
         Timer* fpsTimer_;
         InputManager* inputManager_;
 
+        GameState state_;
         const float fps_;
-
 };
 
 #endif // ENGINE_H

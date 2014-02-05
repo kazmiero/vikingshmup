@@ -15,6 +15,7 @@ class InputManager
         virtual ~InputManager();
 
         bool eventLoop();
+        events::InputEvent menuEventLoop();
 
         void clearEvents();
         const std::vector<events::InputEvent>& getEvents() const;

@@ -138,6 +138,11 @@ void World::clearEvents()
     events_.clear();
 }
 
+void World::clearElements()
+{
+    elements_.clear();
+}
+
 void World::setSpritesAABB(const std::map<std::string,AABB>& spritesAABB)
 {
     spritesAABB_ = spritesAABB;
