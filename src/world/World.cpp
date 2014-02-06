@@ -43,9 +43,10 @@ void World::setupLevel()
 void World::spawnPlayer(int x, int y)
 {
     AABB playerAABB = spritesAABB_["player"];
+    AABB cannonAABB = spritesAABB_["cannon"];
     playerAABB.setPos(Vector2f(x,y));
-    player_ = new Player(playerAABB, "player", 20.0f);
-    elements_.push_back(player_);
+    cannonAABB.setPos(Vector2f(x,y));
+    player_ = new Player(playerAABB, "player", 20.0f, cannonAABB, "cannon");
 
     playerRelativeVelocity_ = player_->getMaxVelocity() / fps_;
 }
@@ -74,6 +75,10 @@ void World::update()
         {
             player_->setSpeed(Vector2f(events_[i].x_,events_[i].y_)*playerRelativeVelocity_);
         }
+        else if (events_[i].id_ == events::OrientCannon)
+        {
+            player_->changeOrientation(events_[i].x_ < 0);
+        }
     }
     clearEvents();
 
@@ -82,6 +87,7 @@ void World::update()
     {
         elements_[elementIndex]->move();
     }
+    player_->move();
 }
 
 bool World::doCollisionCheck()
@@ -92,14 +98,11 @@ bool World::doCollisionCheck()
     bool playerCollisionWithObstacle = false;
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
-        if (elements_[elementIndex] != player_)
-        {
-            playerCollisionWithObstacle = playerCollisionWithObstacle
+        playerCollisionWithObstacle = playerCollisionWithObstacle
                 || collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
 
-            if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
-               elementsToDraw_.push_back(elements_[elementIndex]);
-        }
+        if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
+            elementsToDraw_.push_back(elements_[elementIndex]);
     }
 
     playerCollision = playerCollisionWithObstacle
@@ -123,7 +126,7 @@ bool World::doCollisionCheck()
     // Todo : add an inerty for several frames/seconds
     player_->setSpeed(Vector2f());
 
-    elementsToDraw_.push_back(player_);
+    //elementsToDraw_.push_back(player_);
 
     return false;
 }
@@ -146,6 +149,11 @@ void World::clearElements()
 void World::setSpritesAABB(const std::map<std::string,AABB>& spritesAABB)
 {
     spritesAABB_ = spritesAABB;
+}
+
+const Player* World::getPlayer()
+{
+    return player_;
 }
 
 const std::vector<Element*>& World::getElements()

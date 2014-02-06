@@ -1,5 +1,6 @@
 #ifndef VECTOR2F_H
 #define VECTOR2F_H
+#include <SDL2/SDL.h>
 
 
 class Vector2f
@@ -22,6 +23,9 @@ class Vector2f
         Vector2f& operator-=(const Vector2f& other);
         Vector2f& operator*=(float lambda);
         Vector2f& operator/=(float lambda);
+
+        // conversion
+        SDL_Point toSDL_Point() const;
 };
 
 // operators

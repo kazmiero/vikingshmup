@@ -34,6 +34,7 @@ class World
         void addInputEvent(events::InputEvent event);
 
         void setSpritesAABB(const std::map<std::string,AABB>& spritesAABB);
+        const Player* getPlayer();
         const std::vector<Element*>& getElements();
         const std::vector<const Element*>& getElementsToDraw();
         const int getCameraWidth();

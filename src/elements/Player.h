@@ -11,12 +11,24 @@ class Player : public Entity
 {
     public:
         Player(const AABB& aabb, const std::string& spriteName, float maxVelocity);
+        Player(const AABB& aabb, const std::string& spriteName, float maxVelocity, const AABB& cannonAABB, const std::string& cannonSpriteName);
         virtual ~Player();
 
+        virtual void move();
         void back();
         void scroll(Vector2f cameraScrolling);
+        void changeOrientation(bool positive);
+
+        const AABB& getCannonAABB() const;
+        const SDL_Point getRotationCenter() const;
+        const double getCannonOrientation() const;
+        const std::string& getCannonSpriteName() const;
     protected:
     private:
+        AABB cannonAABB_;
+        std::string cannonSpriteName_;
+        Vector2f relativeCannonRotationCenter_;
+        double cannonOrientation_;
 };
 
 #endif // PLAYER_H

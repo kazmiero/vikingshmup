@@ -47,6 +47,14 @@ void Vector2f::normalize()
     }
 }
 
+SDL_Point Vector2f::toSDL_Point() const
+{
+    SDL_Point point;
+    point.x = (int) x_;
+    point.y = (int) y_;
+    return point;
+}
+
 Vector2f& Vector2f::operator+=(const Vector2f& other)
 {
     x_ += other.x_;

@@ -68,6 +68,11 @@ bool InputManager::eventLoop()
                 return false;
             }
         }
+
+        if (event.type == SDL_MOUSEWHEEL)
+        {
+            events_.push_back(InputEvent(OrientCannon, event.wheel.y, event.wheel.x));
+        }
     }
 
     return true;

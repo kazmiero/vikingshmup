@@ -165,6 +165,18 @@ void Engine::gameLoop()
 void Engine::renderWorld()
 {
     renderer_->clear();
+
+    // draw player
+    const Player* player = world_->getPlayer();
+    SDL_Rect rect = player->getAABB().getRect();
+    renderer_->renderSprite(&rect, player->getSpriteName());
+    // draw cannon
+    SDL_Rect cannonRect = player->getCannonAABB().getRect();
+    SDL_Point rotationCenter = player->getRotationCenter();
+    double orientation = player->getCannonOrientation();
+    renderer_->renderRotatedSprite(&cannonRect, player->getCannonSpriteName(), &rotationCenter, orientation);
+
+    // draw elements
     for (Uint32 elementIndex = 0; elementIndex < world_->getElementsToDraw().size(); elementIndex++)
     {
         const Element* element = world_->getElementsToDraw()[elementIndex];
@@ -203,7 +215,8 @@ void Engine::pushCommands()
     for (Uint32 i = 0; i < inputManager_->getEvents().size(); i++)
     {
         events::InputEvent event = inputManager_->getEvents()[i];
-        if (event.id_ == (events::Quit | events::Pause | events::None))
+        if (event.id_ == events::MovePlayer
+            ||event.id_ == events::OrientCannon)
             world_->addInputEvent(event);
     }
 }

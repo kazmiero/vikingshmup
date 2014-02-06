@@ -28,6 +28,7 @@ void Renderer::initSprites(const std::string& spritesDir)
     spriteNames.push_back("enemy");
     spriteNames.push_back("bullet");
     spriteNames.push_back("obstacle");
+    spriteNames.push_back("cannon");
 
     SDL_Color transparencyColor;
     transparencyColor.r = 0, transparencyColor.g = 255, transparencyColor.b = 255, transparencyColor.a = 255;
@@ -60,6 +61,11 @@ void Renderer::initMenuSprites(const std::string& menuSpritesDir)
 void Renderer::renderSprite(const SDL_Rect* AABB, const std::string& spriteName)
 {
     SDL_RenderCopy(sdlRenderer_, sprites_[spriteName]->get(), NULL, AABB);
+}
+
+void Renderer::renderRotatedSprite(const SDL_Rect* AABB, const std::string& spriteName, const SDL_Point* rotationCenter, const double rotationAngleDegrees)
+{
+    SDL_RenderCopyEx(sdlRenderer_, sprites_[spriteName]->get(), NULL, AABB, rotationAngleDegrees, rotationCenter, SDL_FLIP_NONE);
 }
 
 void Renderer::renderMenuSprite(const SDL_Rect* AABB, const std::string& spriteName)

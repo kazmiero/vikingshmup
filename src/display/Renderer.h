@@ -23,6 +23,7 @@ class Renderer
         void initMenuSprites(const std::string& menuSpritesDir);
 
         void renderSprite(const SDL_Rect* AABB, const std::string& spriteName);
+        void renderRotatedSprite(const SDL_Rect* AABB, const std::string& spriteName, const SDL_Point* rotationCenter, const double rotationAngleDegrees);
         void renderMenuSprite(const SDL_Rect* AABB, const std::string& spriteName);
 
         const std::map<std::string, Sprite*>& getSprites() const;
