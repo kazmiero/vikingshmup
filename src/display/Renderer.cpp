@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "ProgramConstants.h"
 #include <vector>
 #include <iostream>
 
@@ -9,8 +10,8 @@ Renderer::Renderer(SDL_Window* window, int logicalWidth, int logicalHeight)
 
     init();
 
-    initSprites("../ressource/sprite");
-    initMenuSprites("../ressource/menus");
+    initSprites(ProgramConstants::getInstance().getSpritesDir());
+    initMenuSprites(ProgramConstants::getInstance().getMenusDir());
 }
 
 Renderer::~Renderer()

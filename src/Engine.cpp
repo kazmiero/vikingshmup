@@ -1,13 +1,13 @@
 #include "Engine.h"
 #include <iostream>
+#include "ProgramConstants.h"
 
 Engine::Engine() :
-    state_(Title),
-    fps_(60.0f)
+    state_(Title)
 {
-    world_ = new World(fps_);
+    world_ = new World();
     initSDL();
-    fpsTimer_ = new Timer(fps_);
+    fpsTimer_ = new Timer(ProgramConstants::getInstance().getFps());
     inputManager_ = new InputManager();
 
     mainLoop();
@@ -83,8 +83,8 @@ bool Engine::initSDL()
 		"Viking Shmup",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		world_->getCameraWidth(),
-		world_->getCameraHeight(),
+		ProgramConstants::getInstance().getCameraWidth(),
+		ProgramConstants::getInstance().getCameraHeight(),
 		SDL_WINDOW_SHOWN
 	);
 	if (gameWindow_ == NULL){
@@ -92,7 +92,7 @@ bool Engine::initSDL()
         return false;
 	}
 
-	renderer_ = new Renderer(gameWindow_, world_->getCameraWidth(), world_->getCameraHeight());
+	renderer_ = new Renderer(gameWindow_, ProgramConstants::getInstance().getCameraWidth(), ProgramConstants::getInstance().getCameraHeight());
 
 	// create spritesAABB map
 	std::map<std::string,AABB> spritesAABB;
@@ -152,7 +152,7 @@ void Engine::gameLoop()
 
         inputManager_->clearEvents();
         // trick for the relative mode in linux
-        SDL_WarpMouseInWindow(gameWindow_, world_->getCameraWidth()/2, world_->getCameraHeight()/2);
+        SDL_WarpMouseInWindow(gameWindow_, ProgramConstants::getInstance().getCameraWidth()/2, ProgramConstants::getInstance().getCameraHeight()/2);
 
         fpsTimer_->pause();
         Uint32 delay = fpsTimer_->getWaitingTime();

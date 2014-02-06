@@ -16,7 +16,7 @@
 class World
 {
     public:
-        World(float fps);
+        World();
         virtual ~World();
 
         void setupLevel();
@@ -37,15 +37,11 @@ class World
         const Player* getPlayer();
         const std::vector<Element*>& getElements();
         const std::vector<const Element*>& getElementsToDraw();
-        const int getCameraWidth();
-        const int getCameraHeight();
 
     private:
         // constant data
         std::map<std::string,AABB> spritesAABB_;
         const int worldWidth_, worldHeight_;
-        const int cameraWidth_, cameraHeight_;
-        const float fps_;
         const float scrollingSpeed_;    // pixels per second
 
         float playerRelativeVelocity_;  // pixels per frame

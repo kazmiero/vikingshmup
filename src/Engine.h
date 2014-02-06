@@ -42,7 +42,6 @@ class Engine
         InputManager* inputManager_;
 
         GameState state_;
-        const float fps_;
 };
 
 #endif // ENGINE_H

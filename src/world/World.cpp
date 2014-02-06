@@ -1,17 +1,15 @@
 #include "World.h"
 #include <iostream>
 #include <cmath>
+#include "ProgramConstants.h"
 
-World::World(float fps) :
+World::World() :
     worldWidth_(600),
     worldHeight_(1200),
-    cameraWidth_(600),
-    cameraHeight_(600),
-    fps_(fps),
     scrollingSpeed_(20.0f),
     isScrolling_(true)
 {
-    cameraScrolling_ = Vector2f(0.0f,-scrollingSpeed_/fps_);
+    cameraScrolling_ = Vector2f(0.0f,-scrollingSpeed_/ProgramConstants::getInstance().getFps());
 }
 
 World::~World()
@@ -22,7 +20,10 @@ World::~World()
 
 void World::setupLevel()
 {
-    AABB::camera = AABB(0,worldHeight_-cameraHeight_,cameraWidth_,cameraHeight_);
+    const float cameraHeight = ProgramConstants::getInstance().getCameraHeight();
+    const float cameraWidth = ProgramConstants::getInstance().getCameraWidth();
+
+    AABB::camera = AABB(0,worldHeight_-cameraHeight,cameraWidth,cameraHeight);
     collisionHandler_ = new CollisionHandler();
 
     createObstacle(30, 30);
@@ -48,7 +49,7 @@ void World::spawnPlayer(int x, int y)
     cannonAABB.setPos(Vector2f(x,y));
     player_ = new Player(playerAABB, "player", 20.0f, cannonAABB, "cannon");
 
-    playerRelativeVelocity_ = player_->getMaxVelocity() / fps_;
+    playerRelativeVelocity_ = player_->getMaxVelocity() / ProgramConstants::getInstance().getFps();
 }
 
 void World::createObstacle(int x, int y)
@@ -164,14 +165,4 @@ const std::vector<Element*>& World::getElements()
 const std::vector<const Element*>& World::getElementsToDraw()
 {
     return elementsToDraw_;
-}
-
-const int World::getCameraWidth()
-{
-    return cameraWidth_;
-}
-
-const int World::getCameraHeight()
-{
-    return cameraHeight_;
 }
