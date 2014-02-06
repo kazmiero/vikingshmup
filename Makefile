@@ -1,6 +1,6 @@
 CXX		= g++
 CXXFLAGS= -Wall -Isrc
-LDFLAGS	= -lSDL2 -lSDL2main
+LDFLAGS	= -lSDL2 -lSDL2main -lSDL2_image
 INCLUDE	= -Isrc
 TARGET	= VikingShmup
 
@@ -18,10 +18,10 @@ $(BINDIR)/$(TARGET): $(OBJ) $(OBJ_SUBDIR)
 
 $(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	
+
 $(OBJ_SUBDIR): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	
+
 setup:
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(BINDIR)
@@ -30,7 +30,7 @@ setup:
 	@mkdir -p $(OBJDIR)/events
 	@mkdir -p $(OBJDIR)/time
 	@mkdir -p $(OBJDIR)/world
-    
+
 clean:
 	rm -rf $(OBJDIR)/*.o
 	rm -rf $(OBJ_SUBDIR)/*.o
