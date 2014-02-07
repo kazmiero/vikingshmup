@@ -11,9 +11,9 @@ Player::Player(const AABB& aabb, const std::string& spriteName, float maxVelocit
     cannonAABB_(cannonAABB),
     cannonSpriteName_(cannonSpriteName)
 {
-    relativeCannonRotationCenter_ = Vector2f(cannonAABB_.getW()/2, cannonAABB_.getH());
+    relativeCannonRotationCenter_ = Vector2f(0.0f, cannonAABB_.getH());
     cannonOrientation_ = 0.0;
-    cannonAABB_.move(Vector2f(aabb_.getW()/2 - cannonAABB_.getW()/2, 0.0f));
+    cannonAABB_.move(Vector2f(0.0f, -cannonAABB_.getH()/2));
 }
 
 Player::~Player()
@@ -61,7 +61,7 @@ void Player::changeOrientation(bool positive)
 Bullet* Player::shoot()
 {
     Vector2f ori = Vector2f::getOrientationByAngle(cannonOrientation_);
-    Vector2f pos = aabb_.getCenter() + ori * aabb_.getH();
+    Vector2f pos = aabb_.getPos() + ori * aabb_.getH();
 
     return bulletShooter_->shoot(pos, ori);
 }

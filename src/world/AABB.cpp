@@ -34,7 +34,7 @@ void AABB::move(Vector2f dp)
 SDL_Rect AABB::getRect() const
 {
     SDL_Rect rect;
-    Vector2f relativePos = pos_ - AABB::camera.getPos();
+    Vector2f relativePos = pos_ - AABB::camera.getPos() - Vector2f(w_/2, h_/2);
 
     rect.h = (int) h_;
     rect.w = (int) w_;
@@ -47,11 +47,6 @@ SDL_Rect AABB::getRect() const
 const Vector2f& AABB::getPos() const
 {
     return pos_;
-}
-
-Vector2f AABB::getCenter() const
-{
-    return pos_ + Vector2f(w_/2,h_/2);
 }
 
 float AABB::getW() const

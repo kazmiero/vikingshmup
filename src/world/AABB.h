@@ -20,16 +20,14 @@ class AABB
         SDL_Rect getRect() const;
 
         const Vector2f& getPos() const;
-        Vector2f getCenter() const;
         float getW() const;
         float getH() const;
 
         static AABB camera;
     protected:
     private:
-        Vector2f pos_;
-        float w_, h_;
-        SDL_Rect rect_;
+        Vector2f pos_;  ///< center of the AABB
+        float w_, h_;   ///< width and height
 };
 
 #endif // AABB_H
