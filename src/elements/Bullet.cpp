@@ -5,7 +5,7 @@ Bullet::Bullet(const AABB& aabb, const std::string& spriteName, float lifetime, 
     Element(aabb, spriteName)
 {
     // calculate frame number lifetime_ with second lifetime
-    lifetime_ = int(lifetime/ProgramConstants::getInstance().getFps());
+    lifetime_ = int(lifetime*ProgramConstants::getInstance().getFps());
 
     // calculate dp_
     dp_ = ori * velocity/ProgramConstants::getInstance().getFps();
@@ -16,7 +16,7 @@ Bullet::Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float veloc
     Element(model, pos)
 {
     // calculate frame number lifetime_ with second lifetime
-    lifetime_ = int(model.lifetime_/ProgramConstants::getInstance().getFps());
+    lifetime_ = int(model.lifetime_*ProgramConstants::getInstance().getFps());
 
     // calculate dp_
     dp_ = ori * velocity/ProgramConstants::getInstance().getFps();

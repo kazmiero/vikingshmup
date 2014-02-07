@@ -27,16 +27,16 @@ void World::setupLevel()
     AABB::camera = AABB(0,worldHeight_-cameraHeight,cameraWidth,cameraHeight);
     collisionHandler_ = new CollisionHandler();
 
-    createObstacleByModel(30, 30);
-    createObstacleByModel(100, 200);
+    createObstacleByModel(70, 30);
+    createObstacleByModel(130, 200);
     createObstacleByModel(450, 300);
 
-    createObstacleByModel(20, 480);
+    createObstacleByModel(60, 480);
     createObstacleByModel(150, 600);
     createObstacleByModel(400, 750);
 
     createObstacleByModel(200, 880);
-    createObstacleByModel(10, 950);
+    createObstacleByModel(50, 950);
     createObstacleByModel(500, 1000);
 
     spawnPlayer(300, 1150);
@@ -91,7 +91,7 @@ void World::update()
         {
             Bullet* bullet = player_->shoot();
             if (bullet != NULL)
-                elements_.push_back(bullet);
+                playerBullets_.push_back(bullet);
         }
     }
     clearEvents();
@@ -100,6 +100,11 @@ void World::update()
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
         elements_[elementIndex]->move();
+    }
+    // bullets
+    for (std::list<Bullet*>::iterator bulletIt = playerBullets_.begin(); bulletIt != playerBullets_.end(); ++bulletIt)
+    {
+        (*bulletIt)->move();
     }
     player_->move();
 }
@@ -142,7 +147,40 @@ bool World::doCollisionCheck()
 
     //elementsToDraw_.push_back(player_);
 
+    doBulletCollisionCheck();
+
     return false;
+}
+
+void World::doBulletCollisionCheck()
+{
+    for (std::list<Bullet*>::iterator bulletIt = playerBullets_.begin(); bulletIt != playerBullets_.end(); ++bulletIt)
+    {
+        Bullet* bullet = *bulletIt;
+        bool bulletCollision = false;
+
+        for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
+        {
+            bulletCollision = bulletCollision
+                ||collisionHandler_->twoAABBCollisionCheck(bullet->getAABB(), elements_[elementIndex]->getAABB());
+
+            // does it optimize ?
+            if (bulletCollision)
+                break;
+        }
+
+        if (bulletCollision ||!bullet->lives())
+        {
+            bulletIt = playerBullets_.erase(bulletIt);
+        }
+        else
+            if (collisionHandler_->isInCamera(bullet->getAABB()))
+                elementsToDraw_.push_back(bullet);
+
+        // segfault guard!
+        if (playerBullets_.empty())
+                break;
+    }
 }
 
 void World::addInputEvent(events::InputEvent event)

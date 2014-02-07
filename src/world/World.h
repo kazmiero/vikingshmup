@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <map>
+#include <list>
+
 #include "elements/Player.h"
 #include "elements/Obstacle.h"
 #include "events/InputEvent.h"
@@ -24,6 +26,7 @@ class World
         void update();
         /// @return true if the player is dead
         bool doCollisionCheck();
+        void doBulletCollisionCheck();
         void scroll();
 
         void spawnPlayer(int x, int y);
@@ -52,6 +55,7 @@ class World
 
         // elements
         std::vector<Element*> elements_;
+        std::list<Bullet*> playerBullets_;
         std::vector<const Element*> elementsToDraw_;
         Player* player_;
 

@@ -23,7 +23,7 @@ Player::~Player()
 
 void Player::initShooter(const BulletModel& bulletModel)
 {
-    bulletShooter_ = new BulletShooter(bulletModel, 5.0f, 180.0f);
+    bulletShooter_ = new BulletShooter(bulletModel, 15.0f, 240.0f);
 }
 
 void Player::move()
@@ -78,7 +78,6 @@ const std::string& Player::getCannonSpriteName() const
 
 const SDL_Point Player::getRotationCenter() const
 {
-    //Vector2f center = aabb_.getPos() + relativeCannonRotationCenter_ - AABB::camera.getPos();
     return relativeCannonRotationCenter_.toSDL_Point();
 }
 
