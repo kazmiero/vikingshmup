@@ -28,6 +28,7 @@ setup:
 	@mkdir -p $(OBJDIR)/display
 	@mkdir -p $(OBJDIR)/elements
 	@mkdir -p $(OBJDIR)/events
+	@mkdir -p $(OBJDIR)/models
 	@mkdir -p $(OBJDIR)/time
 	@mkdir -p $(OBJDIR)/world
 
