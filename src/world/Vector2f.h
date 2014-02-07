@@ -9,6 +9,7 @@ class Vector2f
         Vector2f();
         Vector2f(float x, float y);
         Vector2f(int x, int y);
+        Vector2f(double x, double y);
         virtual ~Vector2f();
 
         float dotProduct(const Vector2f& other);
@@ -33,4 +34,6 @@ Vector2f operator+(const Vector2f& first, const Vector2f& second);
 Vector2f operator-(const Vector2f& first, const Vector2f& second);
 Vector2f operator*(const Vector2f& vec, float lambda);
 Vector2f operator/(const Vector2f& vec, float lambda);
+
+Vector2f getOrientationByAngle(double angle);
 #endif // VECTOR2F_H

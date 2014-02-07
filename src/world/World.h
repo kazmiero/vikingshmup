@@ -29,6 +29,8 @@ class World
         void spawnPlayer(int x, int y);
         void createObstacle(int x, int y);
 
+        void createObstacleByModel(int x, int y, const std::string modelName = "default");
+
         void clearEvents();
         void clearElements();
         void addInputEvent(events::InputEvent event);

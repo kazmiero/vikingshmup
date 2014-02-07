@@ -11,6 +11,13 @@ Element::Element(const AABB& aabb, const std::string &spriteName) :
 {
 }
 
+Element::Element(const ElementModel& model, Vector2f pos)
+{
+    aabb_ = model.aabb_;
+    aabb_.setPos(pos);
+    spriteName_ = model.spriteName_;
+}
+
 Element::~Element()
 {
     //dtor

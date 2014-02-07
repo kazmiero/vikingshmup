@@ -9,6 +9,11 @@ Obstacle::Obstacle(const AABB& aabb, const std::string &spriteName) : Element(aa
 {
 }
 
+Obstacle::Obstacle(const ObstacleModel& model, Vector2f pos) :
+    Element(model, pos)
+ {
+ }
+
 Obstacle::~Obstacle()
 {
     //dtor

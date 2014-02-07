@@ -1,6 +1,6 @@
 #include "Engine.h"
-#include <iostream>
 #include "ProgramConstants.h"
+#include <iostream>
 
 Engine::Engine() :
     state_(Title)

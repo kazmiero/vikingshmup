@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "BulletShooter.h"
 
 /// @file Player.h
 
@@ -13,6 +14,8 @@ class Player : public Entity
         Player(const AABB& aabb, const std::string& spriteName, float maxVelocity);
         Player(const AABB& aabb, const std::string& spriteName, float maxVelocity, const AABB& cannonAABB, const std::string& cannonSpriteName);
         virtual ~Player();
+
+        void initShooter(const std::string& bulletSpriteName, const AABB& bulletAABB);
 
         virtual void move();
         void back();
@@ -29,6 +32,8 @@ class Player : public Entity
         std::string cannonSpriteName_;
         Vector2f relativeCannonRotationCenter_;
         double cannonOrientation_;
+
+        BulletShooter* bulletShooter_;
 };
 
 #endif // PLAYER_H

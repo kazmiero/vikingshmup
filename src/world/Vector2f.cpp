@@ -1,6 +1,8 @@
 #include "Vector2f.h"
 #include <cmath>
 
+#define PI 3.14159265
+
 Vector2f::Vector2f() :
     x_(0.0f),
     y_(0.0f)
@@ -14,6 +16,12 @@ Vector2f::Vector2f(float x, float y) :
 }
 
 Vector2f::Vector2f(int x,int y)
+{
+    x_ = float(x);
+    y_ = float(y);
+}
+
+Vector2f::Vector2f(double x,double y)
 {
     x_ = float(x);
     y_ = float(y);
@@ -113,4 +121,9 @@ Vector2f operator/(const Vector2f& vec, float lambda)
     quo.x_ /= lambda;
     quo.y_ /= lambda;
     return quo;
+}
+
+Vector2f getOrientationByAngle(double angle)
+{
+    return Vector2f(sin(angle*PI/180.0), -cos(angle*PI/180.0));
 }

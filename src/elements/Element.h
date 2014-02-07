@@ -3,6 +3,7 @@
 
 #include <string>
 #include "world/AABB.h"
+#include "models/ElementModel.h"
 
 /// @file Element.h
 
@@ -13,6 +14,8 @@ class Element
     public:
         Element();
         Element(const AABB& aabb, const std::string &spriteName);
+        Element(const ElementModel& model, Vector2f pos);
+
         virtual ~Element();
 
         const AABB& getAABB() const;

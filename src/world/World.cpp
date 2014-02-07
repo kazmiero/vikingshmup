@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include "ProgramConstants.h"
+#include "models/ModelManager.h"
 
 World::World() :
     worldWidth_(600),
@@ -26,17 +27,17 @@ void World::setupLevel()
     AABB::camera = AABB(0,worldHeight_-cameraHeight,cameraWidth,cameraHeight);
     collisionHandler_ = new CollisionHandler();
 
-    createObstacle(30, 30);
-    createObstacle(100, 200);
-    createObstacle(450, 300);
+    createObstacleByModel(30, 30);
+    createObstacleByModel(100, 200);
+    createObstacleByModel(450, 300);
 
-    createObstacle(20, 480);
-    createObstacle(150, 600);
-    createObstacle(400, 750);
+    createObstacleByModel(20, 480);
+    createObstacleByModel(150, 600);
+    createObstacleByModel(400, 750);
 
-    createObstacle(200, 880);
-    createObstacle(10, 950);
-    createObstacle(500, 1000);
+    createObstacleByModel(200, 880);
+    createObstacleByModel(10, 950);
+    createObstacleByModel(500, 1000);
 
     spawnPlayer(300, 1150);
 }
@@ -57,6 +58,11 @@ void World::createObstacle(int x, int y)
     AABB aabb = spritesAABB_["obstacle"];
     aabb.setPos(Vector2f(x,y));
     elements_.push_back(new Obstacle(aabb, "obstacle"));
+}
+
+void World::createObstacleByModel(int x, int y, const std::string modelName /*= default*/)
+{
+    elements_.push_back(new Obstacle(ModelManager::getInstance().getObstacleModelByName(modelName), Vector2f(x,y)));
 }
 
 void World::scroll()
@@ -150,6 +156,7 @@ void World::clearElements()
 void World::setSpritesAABB(const std::map<std::string,AABB>& spritesAABB)
 {
     spritesAABB_ = spritesAABB;
+    ModelManager::getInstance().createModels(spritesAABB_);
 }
 
 const Player* World::getPlayer()

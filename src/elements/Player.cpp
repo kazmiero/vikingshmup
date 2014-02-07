@@ -21,6 +21,11 @@ Player::~Player()
     //dtor
 }
 
+void Player::initShooter(const std::string& bulletSpriteName, const AABB& bulletAABB)
+{
+    bulletShooter_ = new BulletShooter(10.0f,60.0f,3.0f,bulletSpriteName, bulletAABB);
+}
+
 void Player::move()
 {
     aabb_.move(dp_);

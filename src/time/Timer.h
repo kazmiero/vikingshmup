@@ -14,6 +14,8 @@ class Timer
         virtual ~Timer();
 
         Uint32 getWaitingTime();
+        bool hasTicked();
+
         void reset();
         void start();
         void pause();

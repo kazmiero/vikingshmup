@@ -28,6 +28,12 @@ void Timer::reset()
     previousTicks_ = 0;
 }
 
+bool Timer::hasTicked()
+{
+    currentTicks_ = SDL_GetTicks();
+    return (currentTicks_-previousTicks_)>1000/frequency_;
+}
+
 Uint32 Timer::getWaitingTime()
 {
     return (Uint32)(1000/frequency_) - (currentTicks_ - previousTicks_);
