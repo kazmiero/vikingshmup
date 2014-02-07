@@ -3,11 +3,12 @@
 
 #include "Bullet.h"
 #include "time/Timer.h"
+#include "models/BulletModel.h"
 
 class BulletShooter
 {
     public:
-        BulletShooter(const float shootCadency, const float bulletSpeed, const float bulletLifetime, const std::string& spriteName, const AABB& aabb);
+        BulletShooter(const BulletModel& bulletModel, const float shootCadency, const float bulletSpeed);
         virtual ~BulletShooter();
 
         Bullet* shoot(Vector2f pos, Vector2f ori);
@@ -15,9 +16,8 @@ class BulletShooter
     private:
         const float shootCadency_;        ///< shoots per second
         const float bulletVelocity_;         ///< pixels per second
-        const float bulletLifetime_;      ///< seconds
-        std::string spriteName_;
-        AABB aabb_;
+
+        const BulletModel& bulletModel_;
 
         Timer* timer_;
 };

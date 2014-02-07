@@ -216,7 +216,8 @@ void Engine::pushCommands()
     {
         events::InputEvent event = inputManager_->getEvents()[i];
         if (event.id_ == events::MovePlayer
-            ||event.id_ == events::OrientCannon)
+            ||event.id_ == events::OrientCannon
+            ||event.id_ == events::Shoot)
             world_->addInputEvent(event);
     }
 }

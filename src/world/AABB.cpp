@@ -49,6 +49,11 @@ const Vector2f& AABB::getPos() const
     return pos_;
 }
 
+Vector2f AABB::getCenter() const
+{
+    return pos_ + Vector2f(w_/2,h_/2);
+}
+
 float AABB::getW() const
 {
     return w_;

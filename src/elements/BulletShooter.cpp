@@ -1,11 +1,9 @@
 #include "BulletShooter.h"
 
-BulletShooter::BulletShooter(const float shootCadency, const float bulletSpeed, const float bulletLifetime, const std::string& spriteName, const AABB& aabb) :
+BulletShooter::BulletShooter(const BulletModel& bulletModel, const float shootCadency, const float bulletSpeed) :
     shootCadency_(shootCadency),
     bulletVelocity_(bulletSpeed),
-    bulletLifetime_(bulletLifetime),
-    spriteName_(spriteName),
-    aabb_(aabb)
+    bulletModel_(bulletModel)
 {
     timer_ = new Timer(shootCadency_);
 }
@@ -20,9 +18,8 @@ Bullet* BulletShooter::shoot(Vector2f pos, Vector2f ori)
     if (timer_->hasTicked())
     {
         timer_->reset();
-        AABB aabb = aabb_;
-        aabb.setPos(pos);
-        return new Bullet(aabb,spriteName_,bulletLifetime_, ori, bulletVelocity_);
+        timer_->start();
+        return new Bullet(bulletModel_, pos, ori, bulletVelocity_);
     }
 
     return NULL;

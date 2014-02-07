@@ -123,7 +123,7 @@ Vector2f operator/(const Vector2f& vec, float lambda)
     return quo;
 }
 
-Vector2f getOrientationByAngle(double angle)
+Vector2f Vector2f::getOrientationByAngle(double angle)
 {
     return Vector2f(sin(angle*PI/180.0), -cos(angle*PI/180.0));
 }

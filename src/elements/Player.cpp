@@ -21,9 +21,9 @@ Player::~Player()
     //dtor
 }
 
-void Player::initShooter(const std::string& bulletSpriteName, const AABB& bulletAABB)
+void Player::initShooter(const BulletModel& bulletModel)
 {
-    bulletShooter_ = new BulletShooter(10.0f,60.0f,3.0f,bulletSpriteName, bulletAABB);
+    bulletShooter_ = new BulletShooter(bulletModel, 5.0f, 180.0f);
 }
 
 void Player::move()
@@ -56,6 +56,14 @@ void Player::changeOrientation(bool positive)
     else if (cannonOrientation_ < -90.0)
         cannonOrientation_ = -90.0;
 
+}
+
+Bullet* Player::shoot()
+{
+    Vector2f ori = Vector2f::getOrientationByAngle(cannonOrientation_);
+    Vector2f pos = aabb_.getCenter() + ori * aabb_.getH();
+
+    return bulletShooter_->shoot(pos, ori);
 }
 
 const AABB& Player::getCannonAABB() const

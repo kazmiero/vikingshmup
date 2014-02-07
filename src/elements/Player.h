@@ -15,12 +15,14 @@ class Player : public Entity
         Player(const AABB& aabb, const std::string& spriteName, float maxVelocity, const AABB& cannonAABB, const std::string& cannonSpriteName);
         virtual ~Player();
 
-        void initShooter(const std::string& bulletSpriteName, const AABB& bulletAABB);
+        void initShooter(const BulletModel& bulletModel);
 
         virtual void move();
         void back();
         void scroll(Vector2f cameraScrolling);
+
         void changeOrientation(bool positive);
+        Bullet* shoot();
 
         const AABB& getCannonAABB() const;
         const SDL_Point getRotationCenter() const;

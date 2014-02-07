@@ -1,7 +1,10 @@
 #include <SDL2/SDL.h>
 #include "InputManager.h"
+#include <iostream>
 
-InputManager::InputManager()
+
+InputManager::InputManager() :
+    leftButtonPressed_(false)
 {
     //ctor
 }
@@ -56,8 +59,26 @@ bool InputManager::eventLoop()
 			events_.push_back(InputEvent(MovePlayer, event.motion.xrel, event.motion.yrel));
 
         // mouse left click
-		if (SDL_GetMouseState(NULL,NULL)&SDL_BUTTON(1))
-            events_.push_back(InputEvent(Shoot));
+//		if (SDL_GetMouseState(NULL,NULL)&SDL_BUTTON(1))
+//        {
+//           events_.push_back(InputEvent(Shoot));
+//           std::cout << "shoot" << std::endl;
+//        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                leftButtonPressed_ = true;
+            }
+        }
+        if (event.type == SDL_MOUSEBUTTONUP)
+        {
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                leftButtonPressed_ = false;
+            }
+        }
 
         if (event.type == SDL_KEYDOWN)
         {
@@ -73,6 +94,11 @@ bool InputManager::eventLoop()
         {
             events_.push_back(InputEvent(OrientCannon, event.wheel.y, event.wheel.x));
         }
+    }
+
+    if (leftButtonPressed_)
+    {
+        events_.push_back(InputEvent(Shoot));
     }
 
     return true;

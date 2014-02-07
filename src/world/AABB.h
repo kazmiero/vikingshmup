@@ -20,6 +20,7 @@ class AABB
         SDL_Rect getRect() const;
 
         const Vector2f& getPos() const;
+        Vector2f getCenter() const;
         float getW() const;
         float getH() const;
 

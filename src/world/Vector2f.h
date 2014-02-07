@@ -27,6 +27,9 @@ class Vector2f
 
         // conversion
         SDL_Point toSDL_Point() const;
+
+        // statics
+        static Vector2f getOrientationByAngle(double angle);
 };
 
 // operators
@@ -35,5 +38,5 @@ Vector2f operator-(const Vector2f& first, const Vector2f& second);
 Vector2f operator*(const Vector2f& vec, float lambda);
 Vector2f operator/(const Vector2f& vec, float lambda);
 
-Vector2f getOrientationByAngle(double angle);
+
 #endif // VECTOR2F_H

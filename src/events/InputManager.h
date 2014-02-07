@@ -22,6 +22,7 @@ class InputManager
     protected:
     private:
         std::vector<events::InputEvent> events_;
+        bool leftButtonPressed_;
 };
 
 #endif // INPUTMANAGER_H

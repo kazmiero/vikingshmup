@@ -49,6 +49,7 @@ void World::spawnPlayer(int x, int y)
     playerAABB.setPos(Vector2f(x,y));
     cannonAABB.setPos(Vector2f(x,y));
     player_ = new Player(playerAABB, "player", 20.0f, cannonAABB, "cannon");
+    player_->initShooter(ModelManager::getInstance().getBulletModelByName("default"));
 
     playerRelativeVelocity_ = player_->getMaxVelocity() / ProgramConstants::getInstance().getFps();
 }
@@ -85,6 +86,12 @@ void World::update()
         else if (events_[i].id_ == events::OrientCannon)
         {
             player_->changeOrientation(events_[i].x_ < 0);
+        }
+        else if (events_[i].id_ == events::Shoot)
+        {
+            Bullet* bullet = player_->shoot();
+            if (bullet != NULL)
+                elements_.push_back(bullet);
         }
     }
     clearEvents();
