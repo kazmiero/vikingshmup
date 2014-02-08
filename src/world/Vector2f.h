@@ -17,6 +17,8 @@ class Vector2f
         float sqNorm();
         void normalize();
 
+        void applyRotation(const Vector2f& center, double angleDegrees);
+
         float x_, y_;
 
         // operators
@@ -30,6 +32,7 @@ class Vector2f
 
         // statics
         static Vector2f getOrientationByAngle(double angle);
+        static Vector2f getOrthogonalVector(const Vector2f& vec);
 };
 
 // operators

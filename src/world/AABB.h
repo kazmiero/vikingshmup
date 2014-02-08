@@ -13,6 +13,7 @@ class AABB
     public:
         AABB();
         AABB(int x, int y, int w, int h);
+        AABB(const Vector2f& pos, float w, float h);
         virtual ~AABB();
 
         void setPos(Vector2f pos);

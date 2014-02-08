@@ -16,6 +16,13 @@ AABB::AABB(int x, int y, int w, int h)
     h_ = float(h);
 }
 
+AABB::AABB(const Vector2f& pos, float w, float h)
+{
+    pos_ = pos;
+    w_ = w;
+    h_ = h;
+}
+
 AABB::~AABB()
 {
     //dtor

@@ -55,6 +55,15 @@ void Vector2f::normalize()
     }
 }
 
+void Vector2f::applyRotation(const Vector2f& center, double angleDegrees)
+{
+    float angleRadians = (float) (angleDegrees * PI/180.0);
+    float x = (x_ - center.x_)*cosf(angleRadians) + (y_ - center.y_)*sinf(angleRadians) + center.x_;
+    float y = -(x_ - center.x_)*sinf(angleRadians) + (y_ - center.y_)*cosf(angleRadians) + center.y_;
+    x_ = x;
+    y_ = y;
+}
+
 SDL_Point Vector2f::toSDL_Point() const
 {
     SDL_Point point;
@@ -126,4 +135,9 @@ Vector2f operator/(const Vector2f& vec, float lambda)
 Vector2f Vector2f::getOrientationByAngle(double angle)
 {
     return Vector2f(sin(angle*PI/180.0), -cos(angle*PI/180.0));
+}
+
+Vector2f Vector2f::getOrthogonalVector(const Vector2f& vec)
+{
+    return Vector2f(-vec.y_, vec.x_);
 }

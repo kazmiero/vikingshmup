@@ -3,6 +3,7 @@
 #include <cmath>
 #include "ProgramConstants.h"
 #include "models/ModelManager.h"
+#include "OBB.h"
 
 World::World() :
     worldWidth_(600),
@@ -119,6 +120,8 @@ bool World::doCollisionCheck()
     {
         playerCollisionWithObstacle = playerCollisionWithObstacle
                 || collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
+                //|| collisionHandler_->twoPolygonsCollisionCheck(OBB(player_->getAABB()), OBB(elements_[elementIndex]->getAABB()));
+
 
         if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
             elementsToDraw_.push_back(elements_[elementIndex]);
