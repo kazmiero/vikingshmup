@@ -30,6 +30,7 @@ void World::setupLevel()
 
     createObstacleByModel(70, 30);
     createObstacleByModel(130, 200);
+    elements_.back()->setRotation(30.0);
     createObstacleByModel(450, 300);
 
     createObstacleByModel(60, 480);
@@ -37,8 +38,10 @@ void World::setupLevel()
     createObstacleByModel(400, 750);
 
     createObstacleByModel(200, 880);
+    elements_.back()->setRotation(45.0);
     createObstacleByModel(50, 950);
     createObstacleByModel(500, 1000);
+    elements_.back()->setRotation(45.0);
 
     spawnPlayer(300, 1150);
 }
@@ -119,8 +122,8 @@ bool World::doCollisionCheck()
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
         playerCollisionWithObstacle = playerCollisionWithObstacle
-                || collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
-                //|| collisionHandler_->twoPolygonsCollisionCheck(OBB(player_->getAABB()), OBB(elements_[elementIndex]->getAABB()));
+                //|| collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
+                || collisionHandler_->twoPolygonsCollisionCheck(OBB(player_->getAABB()), OBB(elements_[elementIndex]->getAABB(), elements_[elementIndex]->getRotation()));
 
 
         if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
@@ -160,19 +163,24 @@ void World::doBulletCollisionCheck()
     for (std::list<Bullet*>::iterator bulletIt = playerBullets_.begin(); bulletIt != playerBullets_.end(); ++bulletIt)
     {
         Bullet* bullet = *bulletIt;
-        bool bulletCollision = false;
+        Uint32 bulletCollision = 0;
 
         for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
         {
-            bulletCollision = bulletCollision
-                ||collisionHandler_->twoAABBCollisionCheck(bullet->getAABB(), elements_[elementIndex]->getAABB());
+            Vector2f normal, tangent;
 
+            bulletCollision = collisionHandler_->circlePolygonCollisionCheck(Circle(bullet->getAABB()), OBB(elements_[elementIndex]->getAABB(), elements_[elementIndex]->getRotation()), normal, tangent);
             // does it optimize ?
             if (bulletCollision)
+            {
+                if (bulletCollision == 1)
+                    bullet->bounce(normal, tangent);
+
                 break;
+            }
         }
 
-        if (bulletCollision ||!bullet->lives())
+        if (bulletCollision == 2 ||!bullet->lives())
         {
             bulletIt = playerBullets_.erase(bulletIt);
         }
@@ -199,6 +207,7 @@ void World::clearEvents()
 void World::clearElements()
 {
     elements_.clear();
+    playerBullets_.clear();
 }
 
 void World::setSpritesAABB(const std::map<std::string,AABB>& spritesAABB)

@@ -61,3 +61,8 @@ const std::vector<Vector2f>& Polygon::getNormals() const
 {
     return normals_;
 }
+
+const Vector2f& Polygon::getNormal(Uint32 i) const
+{
+    return normals_[i];
+}

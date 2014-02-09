@@ -20,6 +20,11 @@ class Element
 
         const AABB& getAABB() const;
         const std::string& getSpriteName() const;
+        const double getRotation() const;
+
+        void setRotation(double rotation);
+
+        bool isRotated() const;
 
         /// move if it is possible, else do nothing
         virtual void move() = 0;
@@ -27,6 +32,7 @@ class Element
     protected:
         AABB aabb_;
         std::string spriteName_;
+        double rotation_;
 };
 
 #endif // ELEMENT_H

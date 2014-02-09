@@ -13,6 +13,8 @@ class OBB : public Polygon
         OBB(const AABB& aabb);
         OBB(const AABB& rotatedAABB, double angleDegrees);
         virtual ~OBB();
+
+        virtual const Vector2f& getNormal(Uint32 i) const;
     protected:
     private:
         void setNormals(double angleDegrees);

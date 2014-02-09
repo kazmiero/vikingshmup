@@ -181,8 +181,9 @@ void Engine::renderWorld()
     {
         const Element* element = world_->getElementsToDraw()[elementIndex];
         SDL_Rect rect = element->getAABB().getRect();
-        renderer_->renderSprite(&rect, element->getSpriteName());
+        renderer_->renderRotatedSprite(&rect, element->getSpriteName(), NULL, element->getRotation());
     }
+
     renderer_->sendToFramebuffer();
 }
 
@@ -216,8 +217,8 @@ void Engine::pushCommands()
     {
         events::InputEvent event = inputManager_->getEvents()[i];
         if (event.id_ == events::MovePlayer
-            ||event.id_ == events::OrientCannon
-            ||event.id_ == events::Shoot)
+            || event.id_ == events::OrientCannon
+            || event.id_ == events::Shoot)
             world_->addInputEvent(event);
     }
 }

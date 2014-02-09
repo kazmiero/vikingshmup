@@ -13,6 +13,8 @@ class Bullet : public Element
 
         virtual void move();
         bool lives();
+
+        void bounce(const Vector2f& normal, const Vector2f& tangent);
         //void setSpeed(Vector2f dp);
         //void setSpeed(float dx, float dy);
         //float getMaxVelocity() const;

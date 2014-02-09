@@ -141,3 +141,12 @@ Vector2f Vector2f::getOrthogonalVector(const Vector2f& vec)
 {
     return Vector2f(-vec.y_, vec.x_);
 }
+
+Vector2f Vector2f::getOrthogonalProjection(const Vector2f& point, const Vector2f& lineP1, const Vector2f& lineP2)
+{
+    Vector2f lineDir = lineP2-lineP1;
+    Vector2f pointToP1 = lineP1-point;
+
+    float t = -1.0f * pointToP1.dotProduct(lineDir) / lineDir.sqNorm();
+    return lineDir*t+lineP1;
+}

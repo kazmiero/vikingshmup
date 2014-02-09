@@ -33,6 +33,7 @@ class Vector2f
         // statics
         static Vector2f getOrientationByAngle(double angle);
         static Vector2f getOrthogonalVector(const Vector2f& vec);
+        static Vector2f getOrthogonalProjection(const Vector2f& point, const Vector2f& lineP1, const Vector2f& lineP2);
 };
 
 // operators

@@ -18,6 +18,7 @@ class Polygon
 
         const std::vector<Vector2f>& getVertices() const;
         const std::vector<Vector2f>& getNormals() const;
+        virtual const Vector2f& getNormal(Uint32 i) const;
 
         AABB computeBoundingAABB();
 

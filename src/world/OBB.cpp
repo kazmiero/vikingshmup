@@ -21,9 +21,12 @@ OBB::OBB(const AABB& rotatedAABB, double angleDegrees)
     vertices_.push_back(rotatedAABB.getPos() + Vector2f(-rotatedAABB.getW()/2, rotatedAABB.getH()/2));   // down left
 
     for (Uint32 i = 0; i < 4; i++)
-        vertices_[i].applyRotation(rotatedAABB.getPos(), angleDegrees);
+        vertices_[i].applyRotation(rotatedAABB.getPos(), -angleDegrees);
 
-    setNormals(angleDegrees);
+    computeNormals();
+    normals_.pop_back();
+    normals_.pop_back();
+    //setNormals(-angleDegrees);
 }
 
 OBB::~OBB()
@@ -35,6 +38,11 @@ void OBB::setNormals(double angleDegrees)
 {
     double angleRadians = angleDegrees * PI / 180.0;
 
-    normals_.push_back(Vector2f(cos(angleRadians), sin(angleRadians)));
     normals_.push_back(Vector2f(-sin(angleRadians), cos(angleRadians)));
+    normals_.push_back(Vector2f(cos(angleRadians), sin(angleRadians)));
+}
+
+const Vector2f& OBB::getNormal(Uint32 i) const
+{
+    return normals_[i % 2];
 }
