@@ -2,7 +2,7 @@
 #define ELEMENT_H
 
 #include <string>
-#include "world/AABB.h"
+#include "world/CollisionModel.h"
 #include "models/ElementModel.h"
 
 /// @file Element.h
@@ -21,6 +21,7 @@ class Element
         const AABB& getAABB() const;
         const std::string& getSpriteName() const;
         const double getRotation() const;
+        const CollisionModel* getCollisionModel() const;
 
         void setRotation(double rotation);
 
@@ -33,6 +34,8 @@ class Element
         AABB aabb_;
         std::string spriteName_;
         double rotation_;
+        CollisionModel* collisionModel_;
+
 };
 
 #endif // ELEMENT_H

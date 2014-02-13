@@ -11,6 +11,8 @@ OBB::OBB(const AABB& aabb)
     vertices_.push_back(aabb.getPos() + Vector2f(-aabb.getW()/2, aabb.getH()/2));   // down left
 
     setNormals(0.0);
+
+    boundingAABB_ = aabb;
 }
 
 OBB::OBB(const AABB& rotatedAABB, double angleDegrees)
@@ -27,6 +29,7 @@ OBB::OBB(const AABB& rotatedAABB, double angleDegrees)
     normals_.pop_back();
     normals_.pop_back();
     //setNormals(-angleDegrees);
+    computeBoundingAABB();
 }
 
 OBB::~OBB()

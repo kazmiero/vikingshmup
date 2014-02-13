@@ -11,6 +11,7 @@ Polygon::Polygon(const std::vector<Vector2f>& vertices)
         vertices_ = vertices;
 
     computeNormals();
+    computeBoundingAABB();
 }
 
 Polygon::~Polygon()
@@ -29,7 +30,7 @@ void Polygon::computeNormals()
     }
 }
 
-AABB Polygon::computeBoundingAABB()
+void Polygon::computeBoundingAABB()
 {
     float minX = vertices_[0].x_, maxX = vertices_[0].x_, minY = vertices_[0].y_, maxY = vertices_[0].y_;
 
@@ -46,10 +47,10 @@ AABB Polygon::computeBoundingAABB()
     }
 
     float w = maxX - minX;
-    float h = maxY - minX;
+    float h = maxY - minY;
     Vector2f pos = Vector2f(maxX + minX, maxY + minY)*0.5f;
 
-    return AABB(pos,w,h);
+    boundingAABB_ = AABB(pos,w,h);
 }
 
 const std::vector<Vector2f>& Polygon::getVertices() const
@@ -65,4 +66,17 @@ const std::vector<Vector2f>& Polygon::getNormals() const
 const Vector2f& Polygon::getNormal(Uint32 i) const
 {
     return normals_[i];
+}
+
+void Polygon::move(Vector2f dp)
+{
+    for (Uint32 i = 0; i < vertices_.size(); i++)
+        vertices_[i] += dp;
+
+    boundingAABB_.move(dp);
+}
+
+const AABB& Polygon::getBoundingAABB() const
+{
+    return boundingAABB_;
 }

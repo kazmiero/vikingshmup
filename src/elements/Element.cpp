@@ -8,7 +8,8 @@ Element::Element()
 Element::Element(const AABB& aabb, const std::string &spriteName) :
     aabb_(aabb),
     spriteName_(spriteName),
-    rotation_(0.0)
+    rotation_(0.0),
+    collisionModel_(NULL)
 {
 }
 
@@ -18,6 +19,7 @@ Element::Element(const ElementModel& model, Vector2f pos)
     aabb_.setPos(pos);
     spriteName_ = model.spriteName_;
     rotation_ = 0.0;
+    collisionModel_ = NULL;
 }
 
 Element::~Element()
@@ -38,6 +40,11 @@ const std::string& Element::getSpriteName() const
 const double Element::getRotation() const
 {
     return rotation_;
+}
+
+const CollisionModel* Element::getCollisionModel() const
+{
+    return collisionModel_;
 }
 
 void Element::setRotation(double rotation)

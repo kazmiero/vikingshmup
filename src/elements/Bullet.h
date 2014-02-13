@@ -25,6 +25,8 @@ class Bullet : public Element
 
         Uint32 lifetime_;       // in frame number
     private:
+        /// circular collision model
+        void initCollisionModel();
 };
 
 #endif // BULLET_H

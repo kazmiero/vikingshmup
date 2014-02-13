@@ -1,9 +1,9 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 
-#include "AABB.h"
+#include "CollisionModel.h"
 
-class Circle
+class Circle : public CollisionModel
 {
     public:
         Circle();
@@ -13,10 +13,12 @@ class Circle
 
         const Vector2f& getCenter() const;
         float getRadius() const;
-    protected:
+        virtual void move(Vector2f dp);
+        virtual const AABB& getBoundingAABB() const;
     private:
         Vector2f center_;
         float radius_;
+        AABB boundingAABB_;
 };
 
 #endif // CIRCLE_H

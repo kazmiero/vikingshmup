@@ -32,7 +32,7 @@ class World
         void spawnPlayer(int x, int y);
         void createObstacle(int x, int y);
 
-        void createObstacleByModel(int x, int y, const std::string modelName = "default");
+        void createObstacleByModel(int x, int y, double rotation = 0.0, const std::string modelName = "default");
 
         void clearEvents();
         void clearElements();
@@ -56,6 +56,7 @@ class World
         // elements
         std::vector<Element*> elements_;
         std::list<Bullet*> playerBullets_;
+        std::list<Bullet*> enemyBullets_;
         std::vector<const Element*> elementsToDraw_;
         Player* player_;
 

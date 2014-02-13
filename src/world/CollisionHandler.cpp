@@ -104,6 +104,12 @@ bool CollisionHandler::overlap(const Vector2f& proj1, const Vector2f& proj2)
 
 Uint32 CollisionHandler::circlePolygonCollisionCheck(const Circle& circle, const Polygon& polygon, Vector2f& normal, Vector2f& tangent)
 {
+    // quick check with bounding AABB
+    if (!twoAABBCollisionCheck(circle.getBoundingAABB(), polygon.getBoundingAABB()))
+    {
+        return false;
+    }
+
     Uint32 collisionCount = 0;
 
     for (Uint32 i = 0; i<polygon.getVertices().size(); i++)

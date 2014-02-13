@@ -29,19 +29,16 @@ void World::setupLevel()
     collisionHandler_ = new CollisionHandler();
 
     createObstacleByModel(70, 30);
-    createObstacleByModel(130, 200);
-    elements_.back()->setRotation(30.0);
+    createObstacleByModel(130, 200, 30.0);
     createObstacleByModel(450, 300);
 
     createObstacleByModel(60, 480);
     createObstacleByModel(150, 600);
     createObstacleByModel(400, 750);
 
-    createObstacleByModel(200, 880);
-    elements_.back()->setRotation(45.0);
+    createObstacleByModel(200, 880, 45.0);
     createObstacleByModel(50, 950);
-    createObstacleByModel(500, 1000);
-    elements_.back()->setRotation(45.0);
+    createObstacleByModel(500, 1000, 45.0);
 
     spawnPlayer(300, 1150);
 }
@@ -65,9 +62,9 @@ void World::createObstacle(int x, int y)
     elements_.push_back(new Obstacle(aabb, "obstacle"));
 }
 
-void World::createObstacleByModel(int x, int y, const std::string modelName /*= default*/)
+void World::createObstacleByModel(int x, int y, double rotation /*= 0.0*/, const std::string modelName /*= default*/)
 {
-    elements_.push_back(new Obstacle(ModelManager::getInstance().getObstacleModelByName(modelName), Vector2f(x,y)));
+    elements_.push_back(new Obstacle(ModelManager::getInstance().getObstacleModelByName(modelName), Vector2f(x,y), rotation));
 }
 
 void World::scroll()
@@ -121,10 +118,11 @@ bool World::doCollisionCheck()
     bool playerCollisionWithObstacle = false;
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
+        const OBB* obb = dynamic_cast<const OBB*>(elements_[elementIndex]->getCollisionModel());
+
         playerCollisionWithObstacle = playerCollisionWithObstacle
                 //|| collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
-                || collisionHandler_->twoPolygonsCollisionCheck(OBB(player_->getAABB()), OBB(elements_[elementIndex]->getAABB(), elements_[elementIndex]->getRotation()));
-
+                || collisionHandler_->twoPolygonsCollisionCheck(OBB(player_->getAABB()), *obb);
 
         if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
             elementsToDraw_.push_back(elements_[elementIndex]);
@@ -163,13 +161,15 @@ void World::doBulletCollisionCheck()
     for (std::list<Bullet*>::iterator bulletIt = playerBullets_.begin(); bulletIt != playerBullets_.end(); ++bulletIt)
     {
         Bullet* bullet = *bulletIt;
+        const Circle* circle = dynamic_cast<const Circle*>(bullet->getCollisionModel());
         Uint32 bulletCollision = 0;
 
         for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
         {
+            const OBB* obb = dynamic_cast<const OBB*>(elements_[elementIndex]->getCollisionModel());
             Vector2f normal, tangent;
 
-            bulletCollision = collisionHandler_->circlePolygonCollisionCheck(Circle(bullet->getAABB()), OBB(elements_[elementIndex]->getAABB(), elements_[elementIndex]->getRotation()), normal, tangent);
+            bulletCollision = collisionHandler_->circlePolygonCollisionCheck(*circle, *obb, normal, tangent);
             // does it optimize ?
             if (bulletCollision)
             {
@@ -208,6 +208,7 @@ void World::clearElements()
 {
     elements_.clear();
     playerBullets_.clear();
+    enemyBullets_.clear();
 }
 
 void World::setSpritesAABB(const std::map<std::string,AABB>& spritesAABB)
