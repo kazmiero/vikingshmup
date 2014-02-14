@@ -14,6 +14,7 @@ Bullet::Bullet(const AABB& aabb, const std::string& spriteName, float lifetime, 
 
     initCollisionModel();
 
+    trajectory_ = NULL;
 }
 
 Bullet::Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float velocity) :
@@ -26,15 +27,26 @@ Bullet::Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float veloc
     dp_ = ori * velocity/ProgramConstants::getInstance().getFps();
 
     initCollisionModel();
+
+    trajectory_ = NULL;
 }
 
 Bullet::~Bullet()
 {
     delete collisionModel_;
+
+    if (trajectory_ != NULL)
+        delete trajectory_;
 }
 
 void Bullet::move()
 {
+    if (trajectory_ != NULL)
+    {
+       dp_ = trajectory_->getCurrentSpeed();
+       trajectory_->update();
+    }
+
     aabb_.move(dp_);
     collisionModel_->move(dp_);
     lifetime_--;
@@ -42,13 +54,20 @@ void Bullet::move()
 
 void Bullet::bounce(const Vector2f& normal, const Vector2f& tangent)
 {
-    Vector2f n = normal;
-    n.normalize();
 
-    Vector2f t = tangent;
-    t.normalize();
-
-    dp_ = t*dp_.dotProduct(t) + n*dp_.dotProduct(n)*-1.0f;
+    if (trajectory_ != NULL)
+    {
+        trajectory_->bounce(normal, tangent);
+    }
+    else
+        dp_.bounce(normal, tangent);
+//    Vector2f n = normal;
+//    n.normalize();
+//
+//    Vector2f t = tangent;
+//    t.normalize();
+//
+//    dp_ = t*dp_.dotProduct(t) + n*dp_.dotProduct(n)*-1.0f;
 }
 
 bool Bullet::lives()
@@ -59,4 +78,10 @@ bool Bullet::lives()
 void Bullet::initCollisionModel()
 {
     collisionModel_ = new Circle(aabb_);
+}
+
+void Bullet::initTrajectory()
+{
+    trajectory_ = new Trajectory(dp_);
+    trajectory_->initUniformAcceleratedTrajectory(100.0);
 }

@@ -64,12 +64,31 @@ void Vector2f::applyRotation(const Vector2f& center, double angleDegrees)
     y_ = y;
 }
 
+
+void Vector2f::bounce(const Vector2f& normal, const Vector2f& tangent)
+{
+    Vector2f n = normal;
+    n.normalize();
+
+    Vector2f t = tangent;
+    t.normalize();
+
+    *this = t*dotProduct(t) + n*dotProduct(n)*-1.0f;
+}
+
 SDL_Point Vector2f::toSDL_Point() const
 {
     SDL_Point point;
     point.x = (int) x_;
     point.y = (int) y_;
     return point;
+}
+
+Vector2f& Vector2f::operator=(const Vector2f& other)
+{
+    x_ = other.x_;
+    y_ = other.y_;
+    return *this;
 }
 
 Vector2f& Vector2f::operator+=(const Vector2f& other)
@@ -131,6 +150,8 @@ Vector2f operator/(const Vector2f& vec, float lambda)
     quo.y_ /= lambda;
     return quo;
 }
+
+// statics
 
 Vector2f Vector2f::getOrientationByAngle(double angle)
 {

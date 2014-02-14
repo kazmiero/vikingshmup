@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include "Element.h"
+#include "Trajectory.h"
 #include "models/BulletModel.h"
 
 class Bullet : public Element
@@ -11,6 +12,7 @@ class Bullet : public Element
         Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float velocity);
         virtual ~Bullet();
 
+        virtual void initTrajectory();
         virtual void move();
         bool lives();
 
@@ -24,6 +26,7 @@ class Bullet : public Element
 //        float maxVelocity_;     // pixels per second
 
         Uint32 lifetime_;       // in frame number
+        Trajectory* trajectory_;
     private:
         /// circular collision model
         void initCollisionModel();

@@ -17,9 +17,13 @@ class Vector2f
         float sqNorm();
         void normalize();
 
+        void bounce(const Vector2f& normal, const Vector2f& tangent);
         void applyRotation(const Vector2f& center, double angleDegrees);
 
         float x_, y_;
+
+        // copy operators
+        Vector2f& operator=(const Vector2f& other);
 
         // operators
         Vector2f& operator+=(const Vector2f& other);

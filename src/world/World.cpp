@@ -92,7 +92,10 @@ void World::update()
         {
             Bullet* bullet = player_->shoot();
             if (bullet != NULL)
+            {
+                bullet->initTrajectory();
                 playerBullets_.push_back(bullet);
+            }
         }
     }
     clearEvents();
