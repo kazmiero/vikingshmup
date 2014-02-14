@@ -83,5 +83,6 @@ void Bullet::initCollisionModel()
 void Bullet::initTrajectory()
 {
     trajectory_ = new Trajectory(dp_);
-    trajectory_->initUniformAcceleratedTrajectory(100.0);
+    //trajectory_->initUniformAcceleratedTrajectory(100.0);
+    trajectory_->initSinusoidalTrajectory(0.5f, 40.0f);
 }

@@ -2,6 +2,9 @@
 #include "ProgramConstants.h"
 
 #include <iostream>
+#include <cmath>
+
+#define PI 3.14159265
 
 Trajectory::Trajectory(Vector2f initialSpeed) :
     initialSpeed_(initialSpeed),
@@ -30,6 +33,29 @@ void Trajectory::initUniformAcceleratedTrajectory(float acceleration, float dura
         float speed = t * frameAcc;
         speed_.push_back(initialSpeed_ + ori*speed);
     }
+}
+
+void Trajectory::initSinusoidalTrajectory(float period, float amplitude)
+{
+    float fps = ProgramConstants::getInstance().getFps();
+
+    Vector2f ori = initialSpeed_;
+    ori.normalize();
+
+    Vector2f ortho = Vector2f::getOrthogonalVector(ori);
+
+    float norm = initialSpeed_.norm();
+
+    for (Uint32 t = 0; t < period*fps; t++)
+    {
+        float deriv = cosf(2*PI*t/(fps*period)) * amplitude/(fps*period);
+        Vector2f dir = ori + ortho*deriv;
+        dir.normalize();
+
+        speed_.push_back(dir*norm);
+    }
+
+    periodic_ = true;
 }
 
 const Vector2f& Trajectory::getCurrentSpeed() const

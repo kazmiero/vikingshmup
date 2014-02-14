@@ -11,6 +11,7 @@ class Trajectory
         virtual ~Trajectory();
 
         void initUniformAcceleratedTrajectory(float acceleration, float duration = 2.0f);
+        void initSinusoidalTrajectory(float period, float amplitude);
 
         const Vector2f& getCurrentSpeed() const;
         void update();
