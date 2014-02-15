@@ -28,6 +28,7 @@ void Renderer::initSprites(const std::string& spritesDir)
     spriteNames.push_back("player");
     spriteNames.push_back("enemy");
     spriteNames.push_back("bullet");
+    spriteNames.push_back("bullet_enemy");
     spriteNames.push_back("obstacle");
     spriteNames.push_back("cannon");
 

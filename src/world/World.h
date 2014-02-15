@@ -7,6 +7,7 @@
 
 #include "elements/Player.h"
 #include "elements/Obstacle.h"
+#include "elements/Enemy.h"
 #include "events/InputEvent.h"
 #include "AABB.h"
 #include "CollisionHandler.h"
@@ -27,12 +28,14 @@ class World
         /// @return true if the player is dead
         bool doCollisionCheck();
         void doBulletCollisionCheck();
+        bool doEnemyBulletCollisionCheck();
         void scroll();
 
         void spawnPlayer(int x, int y);
         void createObstacle(int x, int y);
 
         void createObstacleByModel(int x, int y, double rotation = 0.0, const std::string modelName = "default");
+        void createEnemyByModel(int x, int y, bool playerKnowledge, const std::string modelName = "default");
 
         void clearEvents();
         void clearElements();
@@ -55,6 +58,7 @@ class World
 
         // elements
         std::vector<Element*> elements_;
+        std::list<Enemy*> enemies_;
         std::list<Bullet*> playerBullets_;
         std::list<Bullet*> enemyBullets_;
         std::vector<const Element*> elementsToDraw_;

@@ -30,9 +30,17 @@ const ObstacleModel& ModelManager::getObstacleModelByName(const std::string& nam
     return *obstacleModels_.at(name);
 }
 
+const EnemyModel& ModelManager::getEnemyModelByName(const std::string& name)
+{
+    return *enemyModels_.at(name);
+}
+
 void ModelManager::createModels(std::map<std::string,AABB> spritesAABB)
 {
     obstacleModels_["default"] = new ObstacleModel("obstacle", spritesAABB["obstacle"]);
 
     bulletModels_["default"] = new BulletModel("bullet", spritesAABB["bullet"], 3.0f);
+    bulletModels_["enemy"] = new BulletModel("bullet_enemy", spritesAABB["bullet_enemy"], 3.0f);
+
+    enemyModels_["default"] = new EnemyModel("enemy", spritesAABB["enemy"], getBulletModelByName("enemy"));
 }

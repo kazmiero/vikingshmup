@@ -2,7 +2,7 @@
 #define MODELMANAGER_H
 
 #include "ObstacleModel.h"
-#include "BulletModel.h"
+#include "EnemyModel.h"
 #include <map>
 
 class ModelManager
@@ -12,6 +12,7 @@ class ModelManager
 
         const ObstacleModel& getObstacleModelByName(const std::string& name);
         const BulletModel& getBulletModelByName(const std::string& name);
+        const EnemyModel& getEnemyModelByName(const std::string& name);
 
         void createModels(std::map<std::string,AABB> spritesAABB);
 
@@ -22,6 +23,7 @@ class ModelManager
 
         std::map<std::string, ObstacleModel*> obstacleModels_;
         std::map<std::string, BulletModel*> bulletModels_;
+        std::map<std::string, EnemyModel*> enemyModels_;
 };
 
 #endif // MODELMANAGER_H

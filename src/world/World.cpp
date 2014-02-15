@@ -41,6 +41,11 @@ void World::setupLevel()
     createObstacleByModel(500, 1000, 45.0);
 
     spawnPlayer(300, 1150);
+
+    createEnemyByModel(400, 800, true);
+    createEnemyByModel(100, 800, true);
+    createEnemyByModel(300, 40, true);
+    createEnemyByModel(500, 200, true);
 }
 
 void World::spawnPlayer(int x, int y)
@@ -65,6 +70,13 @@ void World::createObstacle(int x, int y)
 void World::createObstacleByModel(int x, int y, double rotation /*= 0.0*/, const std::string modelName /*= default*/)
 {
     elements_.push_back(new Obstacle(ModelManager::getInstance().getObstacleModelByName(modelName), Vector2f(x,y), rotation));
+}
+
+void World::createEnemyByModel(int x, int y, bool playerKnowledge, const std::string modelName /*= default*/)
+{
+    enemies_.push_back(new Enemy(ModelManager::getInstance().getEnemyModelByName(modelName), Vector2f(x,y)));
+    if (playerKnowledge)
+        enemies_.back()->setPlayer(player_);
 }
 
 void World::scroll()
@@ -93,7 +105,7 @@ void World::update()
             Bullet* bullet = player_->shoot();
             if (bullet != NULL)
             {
-                bullet->initTrajectory();
+                //bullet->initTrajectory();
                 playerBullets_.push_back(bullet);
             }
         }
@@ -105,17 +117,41 @@ void World::update()
     {
         elements_[elementIndex]->move();
     }
-    // bullets
+    // enemies
+    for (std::list<Enemy*>::iterator enemyIt = enemies_.begin(); enemyIt != enemies_.end(); ++enemyIt)
+    {
+        (*enemyIt)->move();
+        Bullet* bullet = (*enemyIt)->shootToPlayer();
+        if (bullet != NULL)
+            {
+                bullet->initTrajectory();
+                enemyBullets_.push_back(bullet);
+            }
+    }
+    // player bullets
     for (std::list<Bullet*>::iterator bulletIt = playerBullets_.begin(); bulletIt != playerBullets_.end(); ++bulletIt)
     {
         (*bulletIt)->move();
     }
+    // enemy bullets
+    for (std::list<Bullet*>::iterator bulletIt = enemyBullets_.begin(); bulletIt != enemyBullets_.end(); ++bulletIt)
+    {
+        (*bulletIt)->move();
+    }
+
     player_->move();
 }
 
 bool World::doCollisionCheck()
 {
     elementsToDraw_.clear();
+
+    for (std::list<Enemy*>::iterator enemyIt = enemies_.begin(); enemyIt != enemies_.end(); ++enemyIt)
+    {
+        if (collisionHandler_->isInCamera((*enemyIt)->getAABB()))
+            elementsToDraw_.push_back(*enemyIt);
+    }
+
 
     bool playerCollision = false;
     bool playerCollisionWithObstacle = false;
@@ -156,6 +192,12 @@ bool World::doCollisionCheck()
 
     doBulletCollisionCheck();
 
+    if (doEnemyBulletCollisionCheck())
+    {
+        std::cout << "DEAD" << std::endl;
+        return true;
+    }
+
     return false;
 }
 
@@ -167,6 +209,26 @@ void World::doBulletCollisionCheck()
         const Circle* circle = dynamic_cast<const Circle*>(bullet->getCollisionModel());
         Uint32 bulletCollision = 0;
 
+        bool bulletOnEnemy = false;
+        // collision with enemy : destroy the bullet
+        for (std::list<Enemy*>::iterator enemyIt = enemies_.begin(); enemyIt != enemies_.end(); ++enemyIt)
+        {
+            bulletOnEnemy = collisionHandler_->twoAABBCollisionCheck(bullet->getAABB(), (*enemyIt)->getAABB());
+            if (bulletOnEnemy)
+            {
+                if ((*enemyIt)->injure())
+                    enemies_.erase(enemyIt);
+                break;
+            }
+        }
+
+        if (bulletOnEnemy)
+        {
+            bulletIt = playerBullets_.erase(bulletIt);
+            continue;
+        }
+
+        // collision with obstacle -> bounce
         for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
         {
             const OBB* obb = dynamic_cast<const OBB*>(elements_[elementIndex]->getCollisionModel());
@@ -197,6 +259,54 @@ void World::doBulletCollisionCheck()
     }
 }
 
+bool World::doEnemyBulletCollisionCheck()
+{
+   for (std::list<Bullet*>::iterator bulletIt = enemyBullets_.begin(); bulletIt != enemyBullets_.end(); ++bulletIt)
+    {
+        Bullet* bullet = *bulletIt;
+        const Circle* circle = dynamic_cast<const Circle*>(bullet->getCollisionModel());
+        Uint32 bulletCollision = 0;
+
+        bool bulletOnPlayer = collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), bullet->getAABB());
+        if (bulletOnPlayer)
+        {
+            enemyBullets_.erase(bulletIt);
+            return true;
+        }
+
+        // collision with obstacle -> bounce
+        for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
+        {
+            const OBB* obb = dynamic_cast<const OBB*>(elements_[elementIndex]->getCollisionModel());
+            Vector2f normal, tangent;
+
+            bulletCollision = collisionHandler_->circlePolygonCollisionCheck(*circle, *obb, normal, tangent);
+            // does it optimize ?
+            if (bulletCollision)
+            {
+                if (bulletCollision == 1)
+                    bullet->bounce(normal, tangent);
+
+                break;
+            }
+        }
+
+        if (bulletCollision == 2 ||!bullet->lives())
+        {
+            bulletIt = enemyBullets_.erase(bulletIt);
+        }
+        else
+            if (collisionHandler_->isInCamera(bullet->getAABB()))
+                elementsToDraw_.push_back(bullet);
+
+        // segfault guard!
+        if (enemyBullets_.empty())
+                break;
+    }
+
+    return false;
+}
+
 void World::addInputEvent(events::InputEvent event)
 {
     events_.push_back(event);
@@ -210,6 +320,7 @@ void World::clearEvents()
 void World::clearElements()
 {
     elements_.clear();
+    enemies_.clear();
     playerBullets_.clear();
     enemyBullets_.clear();
 }
