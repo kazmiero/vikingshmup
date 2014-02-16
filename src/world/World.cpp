@@ -148,7 +148,7 @@ bool World::doCollisionCheck()
 
     for (std::list<Enemy*>::iterator enemyIt = enemies_.begin(); enemyIt != enemies_.end(); ++enemyIt)
     {
-        if (collisionHandler_->isInCamera((*enemyIt)->getAABB()))
+        if (collisionHandler_->isInCamera((*enemyIt)->getAABB()) && !(*enemyIt)->invisible())
             elementsToDraw_.push_back(*enemyIt);
     }
 

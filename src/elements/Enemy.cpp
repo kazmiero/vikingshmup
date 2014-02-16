@@ -10,6 +10,8 @@ Enemy::Enemy(const AABB& aabb, const std::string& spriteName, float maxVelocity)
 {
     hp_ = 10;
     dp_ = Vector2f();
+
+    animationTimer_ = new Timer(10.0f);
 }
 
 Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
@@ -20,12 +22,16 @@ Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
 
     aabb_.setPos(pos);
 
+    animationTimer_ = new Timer(10.0f);
+
     initShooter(model.bulletModel_);
 }
 
 Enemy::~Enemy()
 {
-    //dtor
+    delete animationTimer_;
+
+    delete bulletShooter_;
 }
 
 void Enemy::initShooter(const BulletModel& model)
@@ -57,9 +63,23 @@ void Enemy::setPlayer(const Player* player)
 
 bool Enemy::injure()
 {
+    if (animationTimer_->stopped())
+        animationTimer_->start();
+
     hp_--;
     if (hp_ == 0)
         return true;
 
     return false;
+}
+
+bool Enemy::invisible()
+{
+    if (!animationTimer_->hasTicked())
+        return true;
+    else
+    {
+        animationTimer_->reset();
+        return false;
+    }
 }

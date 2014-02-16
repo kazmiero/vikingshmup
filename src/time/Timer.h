@@ -15,6 +15,7 @@ class Timer
 
         Uint32 getWaitingTime();
         bool hasTicked();
+        bool stopped();
 
         void reset();
         void start();

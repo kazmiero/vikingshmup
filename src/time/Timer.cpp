@@ -38,3 +38,8 @@ Uint32 Timer::getWaitingTime()
 {
     return (Uint32)(1000/frequency_) - (currentTicks_ - previousTicks_);
 }
+
+bool Timer::stopped()
+{
+    return currentTicks_ == 0 && previousTicks_ == 0;
+}
