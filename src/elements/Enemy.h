@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "BulletShooter.h"
+#include "PatternShooter.h"
 #include "models/EnemyModel.h"
 
 
@@ -17,16 +18,21 @@ class Enemy : public Entity
         void initShooter(const BulletModel& bulletModel);
         Bullet* shoot();
         Bullet* shootToPlayer();
+        std::vector<Bullet*>* shootPattern();
 
         /// @return true if dead
         bool injure();
-
         bool invisible();
+
+        bool patternShoot() const;
 
         void setPlayer(const Player* player);
     protected:
     private:
+        bool patternShoot_;
+
         BulletShooter* bulletShooter_;
+        PatternShooter* patternShooter_;
         Uint32 hp_;
         const Player* player_;
 

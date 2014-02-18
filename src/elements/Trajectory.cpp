@@ -14,6 +14,14 @@ Trajectory::Trajectory(Vector2f initialSpeed) :
 
 }
 
+Trajectory::Trajectory(const Trajectory& other) :
+    initialSpeed_(other.initialSpeed_),
+    speed_(other.speed_),
+    periodic_(other.periodic_),
+    currentFrame_(0)
+{
+}
+
 Trajectory::~Trajectory()
 {
     //dtor
@@ -60,7 +68,10 @@ void Trajectory::initSinusoidalTrajectory(float period, float amplitude)
 
 const Vector2f& Trajectory::getCurrentSpeed() const
 {
-    return speed_[currentFrame_];
+    if (speed_.empty())
+        return initialSpeed_;
+    else
+        return speed_[currentFrame_];
 }
 
 void Trajectory::update()
@@ -86,4 +97,9 @@ void Trajectory::bounce(const Vector2f& normal, const Vector2f& tangent)
         for (Uint32 j = 0; j < currentFrame_; j++)
             speed_[j].bounce(normal, tangent);
     }
+}
+
+bool Trajectory::empty() const
+{
+    return speed_.empty();
 }

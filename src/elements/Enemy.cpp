@@ -24,6 +24,8 @@ Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
 
     animationTimer_ = new Timer(10.0f);
 
+    patternShoot_ = true;
+
     initShooter(model.bulletModel_);
 }
 
@@ -31,12 +33,22 @@ Enemy::~Enemy()
 {
     delete animationTimer_;
 
-    delete bulletShooter_;
+    if (bulletShooter_ != NULL)
+        delete bulletShooter_;
+
+    if (patternShooter_ != NULL)
+        delete patternShooter_;
 }
 
 void Enemy::initShooter(const BulletModel& model)
 {
-    bulletShooter_ = new BulletShooter(model, 5.0f, 240.0f);
+    if (!patternShoot_)
+        bulletShooter_ = new BulletShooter(model, 5.0f, 240.0f);
+    else
+    {
+        patternShooter_ = new PatternShooter(model, 5.0f, 0.5f, aabb_.getH(), 240.0f, 5);
+        patternShooter_->initCirclePattern();
+    }
 }
 
 Bullet* Enemy::shoot()
@@ -54,6 +66,11 @@ Bullet* Enemy::shootToPlayer()
     Vector2f pos = aabb_.getPos() + Vector2f(0.0f, aabb_.getH());
 
     return bulletShooter_->shoot(pos, ori);
+}
+
+std::vector<Bullet*>* Enemy::shootPattern()
+{
+    return patternShooter_->shoot(aabb_.getPos());
 }
 
 void Enemy::setPlayer(const Player* player)
@@ -82,4 +99,9 @@ bool Enemy::invisible()
         animationTimer_->reset();
         return false;
     }
+}
+
+bool Enemy::patternShoot() const
+{
+    return patternShoot_;
 }

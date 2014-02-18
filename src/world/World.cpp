@@ -120,13 +120,26 @@ void World::update()
     // enemies
     for (std::list<Enemy*>::iterator enemyIt = enemies_.begin(); enemyIt != enemies_.end(); ++enemyIt)
     {
-        (*enemyIt)->move();
-        Bullet* bullet = (*enemyIt)->shootToPlayer();
-        if (bullet != NULL)
+        Enemy* enemy = *enemyIt;
+        enemy->move();
+
+        if (enemy->patternShoot())
+        {
+            std::vector<Bullet*>* bullets = enemy->shootPattern();
+            if (bullets != NULL)
             {
-                bullet->initTrajectory();
-                enemyBullets_.push_back(bullet);
+                enemyBullets_.insert(enemyBullets_.end(), bullets->begin(), bullets->end());
             }
+        }
+        else
+        {
+            Bullet* bullet = enemy->shootToPlayer();
+            if (bullet != NULL)
+                {
+                    //bullet->initTrajectory();
+                    enemyBullets_.push_back(bullet);
+                }
+        }
     }
     // player bullets
     for (std::list<Bullet*>::iterator bulletIt = playerBullets_.begin(); bulletIt != playerBullets_.end(); ++bulletIt)

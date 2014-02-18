@@ -31,6 +31,19 @@ Bullet::Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float veloc
     trajectory_ = NULL;
 }
 
+Bullet::Bullet(const BulletModel& model, Vector2f pos, const Trajectory& trajectory) :
+    Element(model, pos)
+{
+    // calculate frame number lifetime_ with second lifetime
+    lifetime_ = int(model.lifetime_*ProgramConstants::getInstance().getFps());
+
+    initCollisionModel();
+
+    trajectory_ = NULL;
+
+    setTrajectory(trajectory);
+}
+
 Bullet::~Bullet()
 {
     delete collisionModel_;
@@ -85,4 +98,21 @@ void Bullet::initTrajectory()
     trajectory_ = new Trajectory(dp_);
     //trajectory_->initUniformAcceleratedTrajectory(100.0);
     trajectory_->initSinusoidalTrajectory(0.5f, 40.0f);
+}
+
+void Bullet::setTrajectory(const Trajectory& trajectory)
+{
+    // uniform speed
+    if (trajectory.empty())
+    {
+        dp_ = trajectory.getCurrentSpeed();
+
+        // destroy current trajectory
+        if (trajectory_ != NULL)
+            delete trajectory_;
+    }
+    else
+    {
+        trajectory_ = new Trajectory(trajectory);
+    }
 }

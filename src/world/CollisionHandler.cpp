@@ -76,6 +76,21 @@ bool CollisionHandler::twoPolygonsCollisionCheck(const Polygon& polygon1, const 
     return true;
 }
 
+bool CollisionHandler::pointInPolygonCheck(const Vector2f& point, const Polygon& polygon)
+{
+    for (Uint32 n = 0; n<polygon.getNormals().size(); n++)
+    {
+        Vector2f axis = polygon.getNormals()[n];
+        Vector2f proj = getProjection(axis, polygon);
+        float pointProj = axis.dotProduct(point);
+
+        if (pointProj > std::max(proj.x_, proj.y_) ||pointProj < std::min(proj.x_, proj.y_))
+            return false;
+    }
+
+    return true;
+}
+
 
 Vector2f CollisionHandler::getProjection(Vector2f& axis, const Polygon& polygon)
 {
@@ -109,6 +124,9 @@ Uint32 CollisionHandler::circlePolygonCollisionCheck(const Circle& circle, const
     {
         return false;
     }
+
+    if (pointInPolygonCheck(circle.getCenter(), polygon))
+        return 2;
 
     Uint32 collisionCount = 0;
 

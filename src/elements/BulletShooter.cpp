@@ -1,4 +1,5 @@
 #include "BulletShooter.h"
+#include "ProgramConstants.h"
 
 BulletShooter::BulletShooter(const BulletModel& bulletModel, const float shootCadency, const float bulletSpeed) :
     shootCadency_(shootCadency),
@@ -19,7 +20,9 @@ Bullet* BulletShooter::shoot(Vector2f pos, Vector2f ori)
     {
         timer_->reset();
         timer_->start();
-        return new Bullet(bulletModel_, pos, ori, bulletVelocity_);
+        Trajectory traj(ori * bulletVelocity_/ProgramConstants::getInstance().getFps());
+        //return new Bullet(bulletModel_, pos, ori, bulletVelocity_);
+        return new Bullet(bulletModel_, pos, traj);
     }
 
     return NULL;

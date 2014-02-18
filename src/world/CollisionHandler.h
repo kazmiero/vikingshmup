@@ -17,6 +17,9 @@ class CollisionHandler
         /// collision between a circle and a convex polygon, return the collision normal
         /// @return 0 if no collision, 1 for edge collision, 2 for corner collision
         Uint32 circlePolygonCollisionCheck(const Circle& circle, const Polygon& polygon, Vector2f& normal, Vector2f& tangent);
+        /// intersection between point and polygon
+        bool pointInPolygonCheck(const Vector2f& point, const Polygon& polygon);
+
 
         bool isInCamera(const AABB& aabb);
         bool cameraCollisionCheck(const AABB& aabb);

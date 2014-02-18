@@ -15,7 +15,7 @@ class BulletShooter
     protected:
     private:
         const float shootCadency_;        ///< shoots per second
-        const float bulletVelocity_;         ///< pixels per second
+        const float bulletVelocity_;      ///< pixels per second
 
         const BulletModel& bulletModel_;
 

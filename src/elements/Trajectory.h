@@ -8,14 +8,16 @@ class Trajectory
 {
     public:
         Trajectory(Vector2f initialSpeed);
+        Trajectory(const Trajectory& other);
         virtual ~Trajectory();
 
         void initUniformAcceleratedTrajectory(float acceleration, float duration = 2.0f);
         void initSinusoidalTrajectory(float period, float amplitude);
 
         const Vector2f& getCurrentSpeed() const;
-        void update();
+        bool empty() const;
 
+        void update();
         void bounce(const Vector2f& normal, const Vector2f& tangent);
     protected:
     private:

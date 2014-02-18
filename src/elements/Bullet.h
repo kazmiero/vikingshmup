@@ -10,6 +10,7 @@ class Bullet : public Element
     public:
         Bullet(const AABB& aabb, const std::string& spriteName, float lifetime, Vector2f ori, float velocity);
         Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float velocity);
+        Bullet(const BulletModel& model, Vector2f pos, const Trajectory& trajectory);
         virtual ~Bullet();
 
         virtual void initTrajectory();
@@ -17,6 +18,7 @@ class Bullet : public Element
         bool lives();
 
         void bounce(const Vector2f& normal, const Vector2f& tangent);
+        void setTrajectory(const Trajectory& trajectory);
         //void setSpeed(Vector2f dp);
         //void setSpeed(float dx, float dy);
         //float getMaxVelocity() const;
