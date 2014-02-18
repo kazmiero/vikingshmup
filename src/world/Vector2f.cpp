@@ -171,3 +171,8 @@ Vector2f Vector2f::getOrthogonalProjection(const Vector2f& point, const Vector2f
     float t = -1.0f * pointToP1.dotProduct(lineDir) / lineDir.sqNorm();
     return lineDir*t+lineP1;
 }
+
+double Vector2f::getAngleByOrientation(const Vector2f& orientation)
+{
+    return atan2(orientation.x_, -orientation.y_) * 180 / PI;
+}

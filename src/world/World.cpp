@@ -125,7 +125,7 @@ void World::update()
 
         if (enemy->patternShoot())
         {
-            std::vector<Bullet*>* bullets = enemy->shootPattern();
+            std::vector<Bullet*>* bullets = enemy->shootPatternToPlayer();
             if (bullets != NULL)
             {
                 enemyBullets_.insert(enemyBullets_.end(), bullets->begin(), bullets->end());

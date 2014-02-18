@@ -35,15 +35,29 @@ void PatternShooter::initCirclePattern()
     computeTrajectories();
 }
 
+void PatternShooter::initArcOfCirclePattern()
+{
+    for (int i = -3; i <= 3; i++)
+    {
+        angles_.push_back(i * 10.0f);
+    }
+    relativeAngles_ = true;
+
+    trajectories_.resize(angles_.size());
+    computeTrajectories();
+}
+
 void PatternShooter::computeTrajectories(Vector2f dir /* = Vector2f*/)
 {
+    float dirAngle = Vector2f::getAngleByOrientation(dir);
+
     for (Uint32 i = 0; i < angles_.size(); i++)
     {
         Vector2f initialSpeed = Vector2f::getOrientationByAngle(angles_[i]);
         if (relativeAngles_)
         {
-            initialSpeed += dir;
-            initialSpeed.normalize();
+            float angle = angles_[i] + dirAngle;
+            initialSpeed = Vector2f::getOrientationByAngle(angle);
         }
         initialSpeed *= bulletVelocity_;
 
@@ -65,7 +79,9 @@ std::vector<Bullet*>* PatternShooter::shoot(Vector2f pos, Vector2f dir /* = Vect
 
             for (Uint32 i = 0; i < trajectories_.size(); i++)
             {
-                Vector2f bulletPos = pos + Vector2f::getOrientationByAngle(angles_[i])*radius_;
+                Vector2f dir = trajectories_[i]->getCurrentSpeed();
+                dir.normalize();
+                Vector2f bulletPos = pos + dir*radius_;
                 bullets->push_back(new Bullet(bulletModel_, bulletPos, *trajectories_[i]));
             }
 
@@ -77,6 +93,9 @@ std::vector<Bullet*>* PatternShooter::shoot(Vector2f pos, Vector2f dir /* = Vect
         patternTimer_->reset();
         patternTimer_->start();
         currentShootNumber_ = 0;
+
+        if (relativeAngles_)
+            computeTrajectories(dir);
     }
 
     return NULL;

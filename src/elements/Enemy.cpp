@@ -47,7 +47,7 @@ void Enemy::initShooter(const BulletModel& model)
     else
     {
         patternShooter_ = new PatternShooter(model, 5.0f, 0.5f, aabb_.getH(), 240.0f, 5);
-        patternShooter_->initCirclePattern();
+        patternShooter_->initArcOfCirclePattern();
     }
 }
 
@@ -71,6 +71,14 @@ Bullet* Enemy::shootToPlayer()
 std::vector<Bullet*>* Enemy::shootPattern()
 {
     return patternShooter_->shoot(aabb_.getPos());
+}
+
+std::vector<Bullet*>* Enemy::shootPatternToPlayer()
+{
+    Vector2f ori = player_->getAABB().getPos() - aabb_.getPos();
+    ori.normalize();
+
+    return patternShooter_->shoot(aabb_.getPos(), ori);
 }
 
 void Enemy::setPlayer(const Player* player)

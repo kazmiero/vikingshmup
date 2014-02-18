@@ -13,6 +13,7 @@ class PatternShooter
         virtual ~PatternShooter();
 
         void initCirclePattern();
+        void initArcOfCirclePattern();
 
         void computeTrajectories(Vector2f dir = Vector2f());
         /// shoot a salve of bullets

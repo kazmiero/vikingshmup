@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player(const AABB& aabb, const std::string& spriteName, float maxVelocity) :
     Entity(aabb, spriteName, maxVelocity)
@@ -55,7 +56,6 @@ void Player::changeOrientation(bool positive)
         cannonOrientation_ = 90.0;
     else if (cannonOrientation_ < -90.0)
         cannonOrientation_ = -90.0;
-
 }
 
 Bullet* Player::shoot()

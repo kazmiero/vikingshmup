@@ -15,6 +15,8 @@ Bullet::Bullet(const AABB& aabb, const std::string& spriteName, float lifetime, 
     initCollisionModel();
 
     trajectory_ = NULL;
+
+    lastBounce_ = lifetime_+2;
 }
 
 Bullet::Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float velocity) :
@@ -29,6 +31,8 @@ Bullet::Bullet(const BulletModel& model, Vector2f pos, Vector2f ori, float veloc
     initCollisionModel();
 
     trajectory_ = NULL;
+
+    lastBounce_ = lifetime_+2;
 }
 
 Bullet::Bullet(const BulletModel& model, Vector2f pos, const Trajectory& trajectory) :
@@ -42,6 +46,8 @@ Bullet::Bullet(const BulletModel& model, Vector2f pos, const Trajectory& traject
     trajectory_ = NULL;
 
     setTrajectory(trajectory);
+
+    lastBounce_ = lifetime_+2;
 }
 
 Bullet::~Bullet()
@@ -67,20 +73,19 @@ void Bullet::move()
 
 void Bullet::bounce(const Vector2f& normal, const Vector2f& tangent)
 {
+    if (lastBounce_ - lifetime_ <= 1)
+        return;
 
     if (trajectory_ != NULL)
     {
         trajectory_->bounce(normal, tangent);
+        lastBounce_ = lifetime_;
     }
     else
+    {
         dp_.bounce(normal, tangent);
-//    Vector2f n = normal;
-//    n.normalize();
-//
-//    Vector2f t = tangent;
-//    t.normalize();
-//
-//    dp_ = t*dp_.dotProduct(t) + n*dp_.dotProduct(n)*-1.0f;
+        lastBounce_ = lifetime_;
+    }
 }
 
 bool Bullet::lives()

@@ -32,6 +32,7 @@ class Bullet : public Element
     private:
         /// circular collision model
         void initCollisionModel();
+        Uint32 lastBounce_;
 };
 
 #endif // BULLET_H

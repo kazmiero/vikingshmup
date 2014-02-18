@@ -19,6 +19,7 @@ class Enemy : public Entity
         Bullet* shoot();
         Bullet* shootToPlayer();
         std::vector<Bullet*>* shootPattern();
+        std::vector<Bullet*>* shootPatternToPlayer();
 
         /// @return true if dead
         bool injure();
