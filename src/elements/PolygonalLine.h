@@ -14,7 +14,7 @@ class PolygonalLine : public Trajectory
         PolygonalLine();
         virtual ~PolygonalLine();
 
-        void init(const std::vector<Vector2f>& points, float speed, bool closedCurve);
+        void init(const std::vector<Vector2f>& points, float speed, bool closedCurve, float delay = 0.0f);
     protected:
     private:
 };

@@ -10,7 +10,6 @@
 class Enemy : public Entity
 {
     public:
-        Enemy();
         Enemy(const AABB& aabb, const std::string& spriteName, float maxVelocity);
         Enemy(const EnemyModel& model, Vector2f pos);
         virtual ~Enemy();
@@ -26,8 +25,9 @@ class Enemy : public Entity
         bool invisible();
 
         bool patternShoot() const;
-
         void setPlayer(const Player* player);
+
+        virtual bool hasAI() const;
     protected:
     private:
         bool patternShoot_;

@@ -12,10 +12,12 @@ World::World() :
     isScrolling_(true)
 {
     cameraScrolling_ = Vector2f(0.0f,-scrollingSpeed_/ProgramConstants::getInstance().getFps());
+    aiManager_ = new AIManager();
 }
 
 World::~World()
 {
+    delete aiManager_;
     delete collisionHandler_;
     // no need to delete player_ because it is part of the elements_ vector
 }
@@ -41,9 +43,10 @@ void World::setupLevel()
     createObstacleByModel(500, 1000, 45.0);
 
     spawnPlayer(300, 1150);
+    aiManager_->setPlayer(player_);
 
-    createEnemyByModel(400, 800, true);
-    createEnemyByModel(100, 800, true);
+    createAIEnemyByModel(400, 800);
+    createAIEnemyByModel(100, 800);
     createEnemyByModel(300, 40, true);
     createEnemyByModel(500, 200, true);
 }
@@ -79,6 +82,13 @@ void World::createEnemyByModel(int x, int y, bool playerKnowledge, const std::st
         enemies_.back()->setPlayer(player_);
 }
 
+void World::createAIEnemyByModel(int x, int y, const std::string modelName /*= "default"*/)
+{
+    enemies_.push_back(new AIEnemy(ModelManager::getInstance().getEnemyModelByName(modelName), Vector2f(x,y)));
+    enemies_.back()->setPlayer(player_);
+    aiManager_->createAI(dynamic_cast<AIEnemy*>(enemies_.back()));
+}
+
 void World::scroll()
 {
     isScrolling_ = AABB::camera.getPos().y_ > 0;
@@ -112,6 +122,28 @@ void World::update()
     }
     clearEvents();
 
+    // deal with ai
+    aiManager_->update();
+    for (Uint32 i = 0; i < aiManager_->getEvents().size(); i++)
+    {
+        AIEvent event = aiManager_->getEvents()[i];
+        AIEnemy* enemy = aiManager_->getEnemyById(event.aiId_);
+
+        if (event.command_ == Move)
+        {
+            enemy->initTrajectory(aiManager_->getAIById(event.aiId_).getPoints());
+        }
+
+        if (event.command_ == Shoot)
+        {
+            std::vector<Bullet*>* bullets = enemy->shootPatternToPlayer();
+            if (bullets != NULL)
+            {
+                enemyBullets_.insert(enemyBullets_.end(), bullets->begin(), bullets->end());
+            }
+        }
+    }
+
     // update positions
     for (Uint32 elementIndex = 0; elementIndex < elements_.size(); elementIndex++)
     {
@@ -122,6 +154,9 @@ void World::update()
     {
         Enemy* enemy = *enemyIt;
         enemy->move();
+
+        if (enemy->hasAI() || !collisionHandler_->isInCamera(enemy->getAABB()))
+            continue;
 
         if (enemy->patternShoot())
         {
@@ -230,7 +265,14 @@ void World::doBulletCollisionCheck()
             if (bulletOnEnemy)
             {
                 if ((*enemyIt)->injure())
+                {
+                    if ((*enemyIt)->hasAI())
+                    {
+                        AIEnemy* enemy = dynamic_cast<AIEnemy*>(*enemyIt);
+                        aiManager_->removeAI(enemy->getAiId());
+                    }
                     enemies_.erase(enemyIt);
+                }
                 break;
             }
         }
@@ -336,6 +378,7 @@ void World::clearElements()
     enemies_.clear();
     playerBullets_.clear();
     enemyBullets_.clear();
+    aiManager_->clear();
 }
 
 void World::setSpritesAABB(const std::map<std::string,AABB>& spritesAABB)

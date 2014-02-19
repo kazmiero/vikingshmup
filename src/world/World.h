@@ -7,10 +7,11 @@
 
 #include "elements/Player.h"
 #include "elements/Obstacle.h"
-#include "elements/Enemy.h"
+#include "elements/AIEnemy.h"
 #include "events/InputEvent.h"
 #include "AABB.h"
 #include "CollisionHandler.h"
+#include "ai/AIManager.h"
 
 /// @file World.h
 
@@ -36,6 +37,7 @@ class World
 
         void createObstacleByModel(int x, int y, double rotation = 0.0, const std::string modelName = "default");
         void createEnemyByModel(int x, int y, bool playerKnowledge, const std::string modelName = "default");
+        void createAIEnemyByModel(int x, int y, const std::string modelName = "default");
 
         void clearEvents();
         void clearElements();
@@ -69,6 +71,9 @@ class World
 
         // collisions
         CollisionHandler* collisionHandler_;
+
+        // ai
+        AIManager* aiManager_;
 
 };
 

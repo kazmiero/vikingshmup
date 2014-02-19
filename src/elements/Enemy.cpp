@@ -1,10 +1,5 @@
 #include "Enemy.h"
 
-Enemy::Enemy() : Entity()
-{
-    //ctor
-}
-
 Enemy::Enemy(const AABB& aabb, const std::string& spriteName, float maxVelocity) :
     Entity(aabb, spriteName, maxVelocity)
 {
@@ -15,7 +10,7 @@ Enemy::Enemy(const AABB& aabb, const std::string& spriteName, float maxVelocity)
 }
 
 Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
-    Entity(model.aabb_, model.spriteName_, 0.0f)
+    Entity(model.aabb_, model.spriteName_, 30.0f)
 {
     hp_ = 10;
     dp_ = Vector2f();
@@ -112,4 +107,9 @@ bool Enemy::invisible()
 bool Enemy::patternShoot() const
 {
     return patternShoot_;
+}
+
+bool Enemy::hasAI() const
+{
+    return false;
 }
