@@ -24,7 +24,7 @@ Player::~Player()
 
 void Player::initShooter(const BulletModel& bulletModel)
 {
-    bulletShooter_ = new BulletShooter(bulletModel, 15.0f, 240.0f);
+    bulletShooter_ = new BulletShooter(bulletModel, 10.0f, 240.0f);
 }
 
 void Player::move()

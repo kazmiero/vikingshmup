@@ -3,6 +3,8 @@
 #include "world/Circle.h"
 #include <iostream>
 
+#include "PolygonalLine.h"
+
 Bullet::Bullet(const AABB& aabb, const std::string& spriteName, float lifetime, Vector2f ori, float velocity) :
     Element(aabb, spriteName)
 {
@@ -100,6 +102,17 @@ void Bullet::initCollisionModel()
 
 void Bullet::initTrajectory()
 {
+//    std::vector<Vector2f> points;
+//    points.push_back(aabb_.getPos());
+//    points.push_back(points.back() + Vector2f(0, -100));
+//    points.push_back(points.back() + Vector2f(100, 0));
+//    points.push_back(points.back() + Vector2f(-20, 80));
+//    points.push_back(points.back() + Vector2f(-150, -50));
+//
+//    trajectory_ = new PolygonalLine();
+//    dynamic_cast<PolygonalLine*>(trajectory_)->init(points, 600.0f, true);
+
+
     trajectory_ = new Trajectory(dp_);
     //trajectory_->initUniformAcceleratedTrajectory(100.0);
     trajectory_->initSinusoidalTrajectory(0.5f, 40.0f);

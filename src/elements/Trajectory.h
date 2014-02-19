@@ -20,7 +20,6 @@ class Trajectory
         void update();
         void bounce(const Vector2f& normal, const Vector2f& tangent);
     protected:
-    private:
         Vector2f initialSpeed_;
         std::vector<Vector2f> speed_;
         bool periodic_;
