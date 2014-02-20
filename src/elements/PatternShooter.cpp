@@ -103,6 +103,9 @@ std::vector<Bullet*>* PatternShooter::shoot(Vector2f pos, Vector2f dir /* = Vect
 
 std::vector<Bullet*>* PatternShooter::shootOnePattern(Vector2f pos, bool& stillShooting, Vector2f dir /*= Vector2f*/)
 {
+    if (!patternTimer_->hasTicked())
+        return NULL;
+
     if (currentShootNumber_ == 0)
         computeTrajectories(dir);
 
@@ -131,6 +134,8 @@ std::vector<Bullet*>* PatternShooter::shootOnePattern(Vector2f pos, bool& stillS
     {
         currentShootNumber_ = 0;
         stillShooting = false;
+        patternTimer_->reset();
+        patternTimer_->start();
     }
 
     return NULL;

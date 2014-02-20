@@ -24,7 +24,7 @@ const ScriptedAI& AIManager::getAIById(Uint32 id) const
 void AIManager::createAI(AIEnemy* enemy)
 {
     enemy->setAiId(currentMaxId_);
-    AIs_[currentMaxId_] = new ScriptedAI(enemy->getAABB(), player_->getAABB(), false, KeyPositions, 400.0f, 200.0f);
+    AIs_[currentMaxId_] = new ScriptedAI(enemy->getAABB(), player_->getAABB(), false, NearPlayer, 400.0f, 200.0f);
     enemiesById_[currentMaxId_] = enemy;
 
     currentMaxId_++;

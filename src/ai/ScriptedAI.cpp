@@ -44,12 +44,13 @@ void ScriptedAI::update()
     // check for 'Shoot' command
     if (firemode_ == NearPlayer)
     {
-       if (fabs(myAABB_.getPos().y_ - playerAABB_.getPos().y_) < distanceToPlayerShootTrigger_)
+        Vector2f dist = myAABB_.getPos() - playerAABB_.getPos();
+        if (fabs(dist.norm()) < distanceToPlayerShootTrigger_)
             commands_.push_back(Shoot);
     }
     else if (firemode_ == KeyPositions)
     {
-        float epsilon = 1.0f;
+        float epsilon = 0.5f;
 
         for (Uint32 p = 0; p < trajectoryPoints_.size(); p++)
         {
