@@ -16,8 +16,10 @@ class PatternShooter
         void initArcOfCirclePattern();
 
         void computeTrajectories(Vector2f dir = Vector2f());
-        /// shoot a salve of bullets
+        /// shoot a salve of bullets, automatic shoot
         std::vector<Bullet*>* shoot(Vector2f pos, Vector2f dir = Vector2f());
+        /// shoot one pattern but ignore patternTimer_, manual shoot
+        std::vector<Bullet*>* shootOnePattern(Vector2f pos, bool& stillShooting, Vector2f dir = Vector2f());
     protected:
     private:
         const float shootCadency_;      ///< frequency between 2 shoots in the pattern

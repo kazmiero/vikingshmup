@@ -45,8 +45,8 @@ void World::setupLevel()
     spawnPlayer(300, 1150);
     aiManager_->setPlayer(player_);
 
-    createAIEnemyByModel(400, 800);
-    createAIEnemyByModel(100, 800);
+    createAIEnemyByModel(400, 700);
+    createAIEnemyByModel(100, 700);
     createEnemyByModel(300, 40, true);
     createEnemyByModel(500, 200, true);
 }
@@ -136,11 +136,8 @@ void World::update()
 
         if (event.command_ == Shoot)
         {
-            std::vector<Bullet*>* bullets = enemy->shootPatternToPlayer();
-            if (bullets != NULL)
-            {
-                enemyBullets_.insert(enemyBullets_.end(), bullets->begin(), bullets->end());
-            }
+            if (!enemy->isShooting())
+                enemy->setShooting(true);
         }
     }
 
@@ -155,12 +152,12 @@ void World::update()
         Enemy* enemy = *enemyIt;
         enemy->move();
 
-        if (enemy->hasAI() || !collisionHandler_->isInCamera(enemy->getAABB()))
+        if (!collisionHandler_->isInCamera(enemy->getAABB()))
             continue;
 
         if (enemy->patternShoot())
         {
-            std::vector<Bullet*>* bullets = enemy->shootPatternToPlayer();
+            std::vector<Bullet*>* bullets = enemy->shootPattern();
             if (bullets != NULL)
             {
                 enemyBullets_.insert(enemyBullets_.end(), bullets->begin(), bullets->end());
@@ -168,7 +165,7 @@ void World::update()
         }
         else
         {
-            Bullet* bullet = enemy->shootToPlayer();
+            Bullet* bullet = enemy->shoot();
             if (bullet != NULL)
                 {
                     //bullet->initTrajectory();

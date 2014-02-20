@@ -20,6 +20,7 @@ Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
     animationTimer_ = new Timer(10.0f);
 
     patternShoot_ = true;
+    aimAtPlayer_ = true;
 
     initShooter(model.bulletModel_);
 }
@@ -51,27 +52,24 @@ Bullet* Enemy::shoot()
     Vector2f pos = aabb_.getPos() + Vector2f(0.0f, aabb_.getH());
     Vector2f ori = Vector2f(0,1);
 
-    return bulletShooter_->shoot(pos, ori);
-}
-
-Bullet* Enemy::shootToPlayer()
-{
-    Vector2f ori = player_->getAABB().getPos() - aabb_.getPos();
-    ori.normalize();
-    Vector2f pos = aabb_.getPos() + Vector2f(0.0f, aabb_.getH());
+    if (aimAtPlayer_)
+    {
+        ori = player_->getAABB().getPos() - aabb_.getPos();
+        ori.normalize();
+    }
 
     return bulletShooter_->shoot(pos, ori);
 }
 
 std::vector<Bullet*>* Enemy::shootPattern()
 {
-    return patternShooter_->shoot(aabb_.getPos());
-}
+    Vector2f ori = Vector2f();
 
-std::vector<Bullet*>* Enemy::shootPatternToPlayer()
-{
-    Vector2f ori = player_->getAABB().getPos() - aabb_.getPos();
-    ori.normalize();
+    if (aimAtPlayer_)
+    {
+        ori = player_->getAABB().getPos() - aabb_.getPos();
+        ori.normalize();
+    }
 
     return patternShooter_->shoot(aabb_.getPos(), ori);
 }

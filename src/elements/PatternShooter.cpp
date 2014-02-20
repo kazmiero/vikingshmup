@@ -100,3 +100,38 @@ std::vector<Bullet*>* PatternShooter::shoot(Vector2f pos, Vector2f dir /* = Vect
 
     return NULL;
 }
+
+std::vector<Bullet*>* PatternShooter::shootOnePattern(Vector2f pos, bool& stillShooting, Vector2f dir /*= Vector2f*/)
+{
+    if (currentShootNumber_ == 0)
+        computeTrajectories(dir);
+
+    if (currentShootNumber_ < patternShootNumber_)
+    {
+        if (bulletTimer_->hasTicked())
+        {
+            bulletTimer_->reset();
+            bulletTimer_->start();
+            currentShootNumber_++;
+
+            std::vector<Bullet*>* bullets = new std::vector<Bullet*>();
+
+            for (Uint32 i = 0; i < trajectories_.size(); i++)
+            {
+                Vector2f dir = trajectories_[i]->getCurrentSpeed();
+                dir.normalize();
+                Vector2f bulletPos = pos + dir*radius_;
+                bullets->push_back(new Bullet(bulletModel_, bulletPos, *trajectories_[i]));
+            }
+
+            return bullets;
+        }
+    }
+    else
+    {
+        currentShootNumber_ = 0;
+        stillShooting = false;
+    }
+
+    return NULL;
+}

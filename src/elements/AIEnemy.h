@@ -17,12 +17,20 @@ class AIEnemy : public Enemy
 
         const Uint32 getAiId() const;
 
+        virtual std::vector<Bullet*>* shootPattern();
+        bool isShooting() const;
+        void setShooting(bool shooting);
+        bool autofire() const;
+
         virtual bool hasAI() const;
         virtual void move();
     protected:
     private:
+        bool autofire_;
+
         Uint32 aiId_;
         Trajectory* trajectory_;
+        bool shootingOnePattern_;
 };
 
 #endif // AIENEMY_H

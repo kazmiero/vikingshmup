@@ -2,7 +2,9 @@
 #include "PolygonalLine.h"
 
 AIEnemy::AIEnemy(const EnemyModel& model, Vector2f pos) :
-    Enemy(model, pos)
+    Enemy(model, pos),
+    autofire_(false),
+    shootingOnePattern_(false)
 {
     trajectory_ = NULL;
 }
@@ -34,6 +36,21 @@ bool AIEnemy::hasAI() const
     return true;
 }
 
+bool AIEnemy::isShooting() const
+{
+    return shootingOnePattern_;
+}
+
+void AIEnemy::setShooting(bool shooting)
+{
+    shootingOnePattern_ = shooting;
+}
+
+bool AIEnemy::autofire() const
+{
+    return autofire_;
+}
+
 void AIEnemy::move()
 {
     if (trajectory_ != NULL)
@@ -43,4 +60,22 @@ void AIEnemy::move()
     }
 
     aabb_.move(dp_);
+}
+
+std::vector<Bullet*>* AIEnemy::shootPattern()
+{
+    Vector2f ori = Vector2f();
+
+    if (aimAtPlayer_)
+    {
+        ori = player_->getAABB().getPos() - aabb_.getPos();
+        ori.normalize();
+    }
+
+    if (autofire_)
+        return patternShooter_->shoot(aabb_.getPos(), ori);
+    else if (shootingOnePattern_)
+        return patternShooter_->shootOnePattern(aabb_.getPos(), shootingOnePattern_, ori);
+    else
+        return NULL;
 }

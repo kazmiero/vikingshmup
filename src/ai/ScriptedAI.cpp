@@ -49,7 +49,7 @@ void ScriptedAI::update()
     }
     else if (firemode_ == KeyPositions)
     {
-        float epsilon = 10.0f;
+        float epsilon = 1.0f;
 
         for (Uint32 p = 0; p < trajectoryPoints_.size(); p++)
         {

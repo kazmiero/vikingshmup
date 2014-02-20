@@ -16,9 +16,7 @@ class Enemy : public Entity
 
         void initShooter(const BulletModel& bulletModel);
         Bullet* shoot();
-        Bullet* shootToPlayer();
-        std::vector<Bullet*>* shootPattern();
-        std::vector<Bullet*>* shootPatternToPlayer();
+        virtual std::vector<Bullet*>* shootPattern();
 
         /// @return true if dead
         bool injure();
@@ -29,13 +27,14 @@ class Enemy : public Entity
 
         virtual bool hasAI() const;
     protected:
-    private:
+        const Player* player_;
         bool patternShoot_;
-
+        bool aimAtPlayer_;
         BulletShooter* bulletShooter_;
         PatternShooter* patternShooter_;
+
+    private:
         Uint32 hp_;
-        const Player* player_;
 
         /// timer for invisibility frames
         Timer* animationTimer_;
