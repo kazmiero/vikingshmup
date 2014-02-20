@@ -15,6 +15,7 @@ class Enemy : public Entity
         virtual ~Enemy();
 
         void initShooter(const BulletModel& bulletModel);
+        void initShooter(const BulletModel& bulletModel, const PatternModel& patternModel);
         Bullet* shoot();
         virtual std::vector<Bullet*>* shootPattern();
 

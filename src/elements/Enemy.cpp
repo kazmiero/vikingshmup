@@ -22,7 +22,7 @@ Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
     patternShoot_ = true;
     aimAtPlayer_ = true;
 
-    initShooter(model.bulletModel_);
+    initShooter(model.bulletModel_, model.patternModel_);
 }
 
 Enemy::~Enemy()
@@ -42,9 +42,18 @@ void Enemy::initShooter(const BulletModel& model)
         bulletShooter_ = new BulletShooter(model, 5.0f, 240.0f);
     else
     {
-        patternShooter_ = new PatternShooter(model, 5.0f, 0.5f, aabb_.getH(), 240.0f, 5);
+        patternShooter_ = new PatternShooter(model, 5.0f, 0.5f, 240.0f, 5);
+        patternShooter_->setRadius(0.7f*aabb_.getH());
         patternShooter_->initArcOfCirclePattern();
     }
+}
+
+void Enemy::initShooter(const BulletModel& bulletModel, const PatternModel& patternModel)
+{
+    patternShoot_ = true;
+    patternShooter_ = new PatternShooter(bulletModel, patternModel);
+
+    patternShooter_->setRadius(0.7f*aabb_.getH());
 }
 
 Bullet* Enemy::shoot()

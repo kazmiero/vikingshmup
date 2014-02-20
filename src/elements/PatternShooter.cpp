@@ -1,10 +1,9 @@
 #include "PatternShooter.h"
 #include "ProgramConstants.h"
 
-PatternShooter::PatternShooter(const BulletModel& model, const float shootCadency, const float patternCadency, const float radius, const float velocity, const Uint32 shoots) :
+PatternShooter::PatternShooter(const BulletModel& model, const float shootCadency, const float patternCadency, const float velocity, const Uint32 shoots) :
     shootCadency_(shootCadency),
     patternCadency_(patternCadency),
-    radius_(radius),
     bulletVelocity_(velocity/ProgramConstants::getInstance().getFps()),
     patternShootNumber_(shoots),
     bulletModel_(model)
@@ -17,10 +16,35 @@ PatternShooter::PatternShooter(const BulletModel& model, const float shootCadenc
     currentShootNumber_ = 0;
 }
 
+PatternShooter::PatternShooter(const BulletModel& bulletModel, const PatternModel& patternModel) :
+    shootCadency_(patternModel.shootCadency_),
+    patternCadency_(patternModel.patternCadency_),
+    bulletVelocity_(patternModel.velocity_/ProgramConstants::getInstance().getFps()),
+    patternShootNumber_(patternModel.shoots_),
+    bulletModel_(bulletModel)
+{
+    bulletTimer_ = new Timer(shootCadency_);
+    patternTimer_ = new Timer(patternCadency_);
+    //patternTimer_->start();
+    //bulletTimer_->start();
+
+    currentShootNumber_ = 0;
+
+    angles_ = patternModel.angles_;
+    relativeAngles_ = patternModel.relativeAngles_;
+    trajectories_.resize(angles_.size());
+    computeTrajectories();
+}
+
 PatternShooter::~PatternShooter()
 {
     delete bulletTimer_;
     delete patternTimer_;
+}
+
+void PatternShooter::setRadius(float radius)
+{
+    radius_ = radius;
 }
 
 void PatternShooter::initCirclePattern()
