@@ -40,6 +40,11 @@ const PatternModel& ModelManager::getPatternModelByName(const std::string& name)
     return *patternModels_.at(name);
 }
 
+const AIModel& ModelManager::getAIModelByName(const std::string& name)
+{
+    return *aiModels_.at(name);
+}
+
 void ModelManager::createModels(std::map<std::string,AABB> spritesAABB)
 {
     obstacleModels_["default"] = new ObstacleModel("obstacle", spritesAABB["obstacle"]);
@@ -49,17 +54,21 @@ void ModelManager::createModels(std::map<std::string,AABB> spritesAABB)
 
     createPatterns();
 
-    enemyModels_["default"] = new EnemyModel("enemy", spritesAABB["enemy"], getBulletModelByName("enemy"), getPatternModelByName("arcOfCircle"));
+    enemyModels_["default"] = new EnemyModel("enemy", spritesAABB["enemy"], 20.0f, getPatternModelByName("basic2"));
+
+    createAI();
 }
 
 void ModelManager::createPatterns()
 {
+    const BulletModel& bullet = getBulletModelByName("enemy");
+
     // default pattern : 3 shoots
     std::vector<float> angles;
     angles.push_back(180.0f);
     angles.push_back(135.0f);
     angles.push_back(-135.0f);
-    patternModels_["default"] = new PatternModel(5.0f, 0.5f, 240.0f, 4);
+    patternModels_["default"] = new PatternModel(5.0f, 0.5f, 240.0f, 4, bullet);
     patternModels_["default"]->init(angles, false);
 
     // circle pattern
@@ -68,7 +77,7 @@ void ModelManager::createPatterns()
     {
         angles.push_back(i * 20.0f);
     }
-    patternModels_["circle"] = new PatternModel(5.0f, 0.5f, 240.0f, 5);
+    patternModels_["circle"] = new PatternModel(5.0f, 0.5f, 240.0f, 5, bullet);
     patternModels_["circle"]->init(angles, false);
 
     // arc of circle pattern
@@ -77,6 +86,31 @@ void ModelManager::createPatterns()
     {
         angles.push_back(i * 10.0f);
     }
-    patternModels_["arcOfCircle"] = new PatternModel(5.0f, 0.5f, 240.0f, 5);
+    patternModels_["arcOfCircle"] = new PatternModel(5.0f, 0.5f, 240.0f, 5, bullet);
     patternModels_["arcOfCircle"]->init(angles, true);
+
+    angles.clear();
+    angles.push_back(180.0f);
+    patternModels_["basic1"] = new PatternModel(7.0f, 1.0f, 240.0f, 3, bullet);
+    patternModels_["basic1"]->init(angles, false);
+
+    angles.clear();
+    angles.push_back(-10.0f);
+    angles.push_back(10.0f);
+    patternModels_["basic2"] = new PatternModel(7.0f, 1.2f, 240.0f, 1, bullet);
+    patternModels_["basic2"]->init(angles, true);
+}
+
+void ModelManager::createAI()
+{
+    std::vector<Vector2f> points;
+    points.push_back(Vector2f(0,400));
+    aiModels_["1"] = new AIModel(false, Autofire, 500.0f, 0.0f);
+    aiModels_["1"]->initPoints(points);
+
+    points.clear();
+    points.push_back(Vector2f(100,200));
+    points.push_back(Vector2f(200,100));
+    aiModels_["2"] = new AIModel(false, KeyPositions, 500.0f, 0.0f);
+    aiModels_["2"]->initPoints(points);
 }

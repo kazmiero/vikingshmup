@@ -21,11 +21,12 @@ const ScriptedAI& AIManager::getAIById(Uint32 id) const
     return *AIs_.at(id);
 }
 
-void AIManager::createAI(AIEnemy* enemy)
+void AIManager::createAI(AIEnemy* enemy, const AIModel& model)
 {
     enemy->setAiId(currentMaxId_);
-    AIs_[currentMaxId_] = new ScriptedAI(enemy->getAABB(), player_->getAABB(), false, NearPlayer, 400.0f, 200.0f);
+    AIs_[currentMaxId_] = new ScriptedAI(enemy->getAABB(), player_->getAABB(), model);
     enemiesById_[currentMaxId_] = enemy;
+    enemy->setAutofire(model.firemode_ == Autofire);
 
     currentMaxId_++;
 }

@@ -37,7 +37,7 @@ class World
 
         void createObstacleByModel(int x, int y, double rotation = 0.0, const std::string modelName = "default");
         void createEnemyByModel(int x, int y, bool playerKnowledge, const std::string modelName = "default");
-        void createAIEnemyByModel(int x, int y, const std::string modelName = "default");
+        void createAIEnemyByModel(int x, int y, const std::string modelName = "default", const std::string aiModelName = "1");
 
         void clearEvents();
         void clearElements();

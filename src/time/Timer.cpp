@@ -30,6 +30,9 @@ void Timer::reset()
 
 bool Timer::hasTicked()
 {
+    if (stopped())
+        return true;
+
     currentTicks_ = SDL_GetTicks();
     return (currentTicks_-previousTicks_)>1000/frequency_;
 }

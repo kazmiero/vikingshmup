@@ -13,7 +13,7 @@ class AIEnemy : public Enemy
         virtual ~AIEnemy();
 
         void setAiId(Uint32 aiId);
-        void initTrajectory(const std::vector<Vector2f>& points);
+        void initTrajectory(const std::vector<Vector2f>& points, bool periodicTrajectory);
 
         const Uint32 getAiId() const;
 
@@ -21,6 +21,7 @@ class AIEnemy : public Enemy
         bool isShooting() const;
         void setShooting(bool shooting);
         bool autofire() const;
+        void setAutofire(bool autofire);
 
         virtual bool hasAI() const;
         virtual void move();

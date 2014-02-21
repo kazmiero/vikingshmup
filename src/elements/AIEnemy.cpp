@@ -25,10 +25,10 @@ void AIEnemy::setAiId(Uint32 id)
     aiId_ = id;
 }
 
-void AIEnemy::initTrajectory(const std::vector<Vector2f>& points)
+void AIEnemy::initTrajectory(const std::vector<Vector2f>& points, bool periodicTrajectory)
 {
     trajectory_ = new PolygonalLine();
-    dynamic_cast<PolygonalLine*>(trajectory_)->init(points, maxVelocity_, true, 1.0f);
+    dynamic_cast<PolygonalLine*>(trajectory_)->init(points, maxVelocity_, periodicTrajectory, 1.0f);
 }
 
 bool AIEnemy::hasAI() const
@@ -49,6 +49,11 @@ void AIEnemy::setShooting(bool shooting)
 bool AIEnemy::autofire() const
 {
     return autofire_;
+}
+
+void AIEnemy::setAutofire(bool autofire)
+{
+    autofire_ = autofire;
 }
 
 void AIEnemy::move()

@@ -10,7 +10,7 @@ Enemy::Enemy(const AABB& aabb, const std::string& spriteName, float maxVelocity)
 }
 
 Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
-    Entity(model.aabb_, model.spriteName_, 30.0f)
+    Entity(model.aabb_, model.spriteName_, model.maxVelocity_)
 {
     hp_ = 10;
     dp_ = Vector2f();
@@ -22,7 +22,7 @@ Enemy::Enemy(const EnemyModel& model, Vector2f pos) :
     patternShoot_ = true;
     aimAtPlayer_ = true;
 
-    initShooter(model.bulletModel_, model.patternModel_);
+    initShooter(model.patternModel_);
 }
 
 Enemy::~Enemy()
@@ -48,10 +48,10 @@ void Enemy::initShooter(const BulletModel& model)
     }
 }
 
-void Enemy::initShooter(const BulletModel& bulletModel, const PatternModel& patternModel)
+void Enemy::initShooter(const PatternModel& patternModel)
 {
     patternShoot_ = true;
-    patternShooter_ = new PatternShooter(bulletModel, patternModel);
+    patternShooter_ = new PatternShooter(patternModel);
 
     patternShooter_->setRadius(0.7f*aabb_.getH());
 }

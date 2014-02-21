@@ -15,6 +15,18 @@ ScriptedAI::ScriptedAI(const AABB& myAABB, const AABB& playerAABB, bool periodic
     initTrajectoryPoints();
 }
 
+ScriptedAI::ScriptedAI(const AABB& myAABB, const AABB& playerAABB, const AIModel& model) :
+    myAABB_(myAABB),
+    playerAABB_(playerAABB),
+    periodicTrajectory_(model.periodicTrajectory_),
+    firemode_(model.firemode_),
+    distanceToPlayerMoveTrigger_(model.distanceToPlayerMoveTrigger_),
+    distanceToPlayerShootTrigger_(model.distanceToPlayerShootTrigger_)
+{
+    hasMoved_ = false;
+    initTrajectoryPoints(model);
+}
+
 ScriptedAI::~ScriptedAI()
 {
     //dtor
@@ -22,9 +34,18 @@ ScriptedAI::~ScriptedAI()
 
 void ScriptedAI::initTrajectoryPoints()
 {
-    trajectoryPoints_.push_back(myAABB_.getPos());
+    trajectoryPoints_.push_back(Vector2f(myAABB_.getPos()));
     trajectoryPoints_.push_back(trajectoryPoints_.back() + Vector2f(100,0));
     trajectoryPoints_.push_back(trajectoryPoints_.back() + Vector2f(50,100));
+}
+
+void ScriptedAI::initTrajectoryPoints(const AIModel& model)
+{
+    trajectoryPoints_.push_back(Vector2f(myAABB_.getPos()));
+    for (Uint32 i = 0; i < model.points_.size(); i++)
+    {
+        trajectoryPoints_.push_back(trajectoryPoints_.back() + model.points_[i]);
+    }
 }
 
 void ScriptedAI::update()
@@ -50,7 +71,7 @@ void ScriptedAI::update()
     }
     else if (firemode_ == KeyPositions)
     {
-        float epsilon = 0.5f;
+        float epsilon = 0.1f;
 
         for (Uint32 p = 0; p < trajectoryPoints_.size(); p++)
         {
@@ -71,4 +92,9 @@ const std::vector<AICommand>& ScriptedAI::getCommands() const
 const std::vector<Vector2f>& ScriptedAI::getPoints() const
 {
     return trajectoryPoints_;
+}
+
+bool ScriptedAI::periodicTrajectory() const
+{
+    return periodicTrajectory_;
 }

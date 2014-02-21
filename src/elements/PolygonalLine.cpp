@@ -50,4 +50,6 @@ void PolygonalLine::init(const std::vector<Vector2f>& points, float speed, bool 
 
         speed_.push_back(dir*lastFrameSpeed);
     }
+    // stop at the end
+    speed_.push_back(Vector2f());
 }

@@ -17,7 +17,7 @@ class AIManager
         void setPlayer(const Player* player);
 
         void update();
-        void createAI(AIEnemy* enemy);
+        void createAI(AIEnemy* enemy, const AIModel& model);
         void removeAI(Uint32 id);
         void clear();
 

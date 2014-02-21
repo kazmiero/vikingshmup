@@ -1,8 +1,8 @@
 #include "EnemyModel.h"
 
-EnemyModel::EnemyModel(const std::string& spriteName, const AABB& aabb, const BulletModel& bulletModel, const PatternModel& patternModel) :
+EnemyModel::EnemyModel(const std::string& spriteName, const AABB& aabb, const float maxVelocity, const PatternModel& patternModel) :
     ElementModel(spriteName, aabb),
-    bulletModel_(bulletModel),
+    maxVelocity_(maxVelocity),
     patternModel_(patternModel)
 {
     //ctor

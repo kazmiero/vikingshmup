@@ -16,12 +16,12 @@ PatternShooter::PatternShooter(const BulletModel& model, const float shootCadenc
     currentShootNumber_ = 0;
 }
 
-PatternShooter::PatternShooter(const BulletModel& bulletModel, const PatternModel& patternModel) :
+PatternShooter::PatternShooter(const PatternModel& patternModel) :
     shootCadency_(patternModel.shootCadency_),
     patternCadency_(patternModel.patternCadency_),
     bulletVelocity_(patternModel.velocity_/ProgramConstants::getInstance().getFps()),
     patternShootNumber_(patternModel.shoots_),
-    bulletModel_(bulletModel)
+    bulletModel_(patternModel.bulletModel_)
 {
     bulletTimer_ = new Timer(shootCadency_);
     patternTimer_ = new Timer(patternCadency_);
@@ -91,6 +91,10 @@ void PatternShooter::computeTrajectories(Vector2f dir /* = Vector2f*/)
 
 std::vector<Bullet*>* PatternShooter::shoot(Vector2f pos, Vector2f dir /* = Vector2f()*/)
 {
+
+    if (currentShootNumber_ == 0 && relativeAngles_)
+        computeTrajectories(dir);
+
     if (patternTimer_->hasTicked() && currentShootNumber_ < patternShootNumber_)
     {
         if (bulletTimer_->hasTicked())
@@ -117,9 +121,6 @@ std::vector<Bullet*>* PatternShooter::shoot(Vector2f pos, Vector2f dir /* = Vect
         patternTimer_->reset();
         patternTimer_->start();
         currentShootNumber_ = 0;
-
-        if (relativeAngles_)
-            computeTrajectories(dir);
     }
 
     return NULL;
@@ -130,7 +131,7 @@ std::vector<Bullet*>* PatternShooter::shootOnePattern(Vector2f pos, bool& stillS
     if (!patternTimer_->hasTicked())
         return NULL;
 
-    if (currentShootNumber_ == 0)
+    if (currentShootNumber_ == 0 && relativeAngles_)
         computeTrajectories(dir);
 
     if (currentShootNumber_ < patternShootNumber_)

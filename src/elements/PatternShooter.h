@@ -11,7 +11,7 @@ class PatternShooter
 {
     public:
         PatternShooter(const BulletModel& model, const float shootCadency, const float patternCadency, const float velocity, const Uint32 shoots);
-        PatternShooter(const BulletModel& bulletModel, const PatternModel& patternModel);
+        PatternShooter(const PatternModel& patternModel);
         virtual ~PatternShooter();
 
         void setRadius(float radius);

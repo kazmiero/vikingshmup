@@ -1,17 +1,17 @@
 #ifndef ENEMYMODEL_H
 #define ENEMYMODEL_H
 
-#include "BulletModel.h"
 #include "PatternModel.h"
 
 
 class EnemyModel : public ElementModel
 {
     public:
-        EnemyModel(const std::string& spriteName, const AABB& aabb, const BulletModel& bulletModel, const PatternModel& patternModel);
+        EnemyModel(const std::string& spriteName, const AABB& aabb, const float maxVelocity, const PatternModel& patternModel);
         virtual ~EnemyModel();
 
-        const BulletModel& bulletModel_;
+        const float maxVelocity_;
+
         const PatternModel& patternModel_;
 
 };

@@ -7,8 +7,8 @@
 
 World::World() :
     worldWidth_(600),
-    worldHeight_(1200),
-    scrollingSpeed_(20.0f),
+    worldHeight_(2400),
+    scrollingSpeed_(10.0f),
     isScrolling_(true)
 {
     cameraScrolling_ = Vector2f(0.0f,-scrollingSpeed_/ProgramConstants::getInstance().getFps());
@@ -30,25 +30,19 @@ void World::setupLevel()
     AABB::camera = AABB(0,worldHeight_-cameraHeight,cameraWidth,cameraHeight);
     collisionHandler_ = new CollisionHandler();
 
-    createObstacleByModel(70, 30);
-    createObstacleByModel(130, 200, 30.0);
-    createObstacleByModel(450, 300);
-
-    createObstacleByModel(60, 480);
-    createObstacleByModel(150, 600);
-    createObstacleByModel(400, 750);
-
-    createObstacleByModel(200, 880, 45.0);
-    createObstacleByModel(50, 950);
-    createObstacleByModel(500, 1000, 45.0);
-
-    spawnPlayer(300, 1150);
+    spawnPlayer(300, 2350);
     aiManager_->setPlayer(player_);
 
-    createAIEnemyByModel(400, 700);
-    createAIEnemyByModel(100, 700);
-    createEnemyByModel(300, 40, true);
-    createEnemyByModel(500, 200, true);
+    //createAIEnemyByModel(400, 700);
+    createAIEnemyByModel(100, 1900, "default", "1");
+    createAIEnemyByModel(300, 1900, "default", "1");
+    createAIEnemyByModel(500, 1900, "default", "1");
+
+    //createAIEnemyByModel(-50, 1300, "default", "2");
+    //createAIEnemyByModel(-50, 1400, "default", "2");
+
+    //createEnemyByModel(300, 40, true);
+    //createEnemyByModel(500, 200, true);
 }
 
 void World::spawnPlayer(int x, int y)
@@ -82,11 +76,11 @@ void World::createEnemyByModel(int x, int y, bool playerKnowledge, const std::st
         enemies_.back()->setPlayer(player_);
 }
 
-void World::createAIEnemyByModel(int x, int y, const std::string modelName /*= "default"*/)
+void World::createAIEnemyByModel(int x, int y, const std::string modelName /*= "default"*/, const std::string aiModelName /*= "1"*/)
 {
     enemies_.push_back(new AIEnemy(ModelManager::getInstance().getEnemyModelByName(modelName), Vector2f(x,y)));
     enemies_.back()->setPlayer(player_);
-    aiManager_->createAI(dynamic_cast<AIEnemy*>(enemies_.back()));
+    aiManager_->createAI(dynamic_cast<AIEnemy*>(enemies_.back()), ModelManager::getInstance().getAIModelByName(aiModelName));
 }
 
 void World::scroll()
@@ -131,12 +125,13 @@ void World::update()
 
         if (event.command_ == Move)
         {
-            enemy->initTrajectory(aiManager_->getAIById(event.aiId_).getPoints());
+            const ScriptedAI& ai = aiManager_->getAIById(event.aiId_);
+            enemy->initTrajectory(ai.getPoints(), ai.periodicTrajectory());
         }
 
         if (event.command_ == Shoot)
         {
-            if (!enemy->isShooting())
+            if (!enemy->isShooting() && collisionHandler_->isInCamera(enemy->getAABB()))
                 enemy->setShooting(true);
         }
     }

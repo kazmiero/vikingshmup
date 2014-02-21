@@ -1,10 +1,11 @@
 #include "PatternModel.h"
 
-PatternModel::PatternModel(const float shootCadency, const float patternCadency, const float velocity, const Uint32 shoots) :
+PatternModel::PatternModel(const float shootCadency, const float patternCadency, const float velocity, const Uint32 shoots, const BulletModel& bulletModel) :
     shootCadency_(shootCadency),
     patternCadency_(patternCadency),
     velocity_(velocity),
-    shoots_(shoots)
+    shoots_(shoots),
+    bulletModel_(bulletModel)
 {
     //ctor
 }
