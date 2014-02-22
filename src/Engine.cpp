@@ -166,6 +166,13 @@ void Engine::renderWorld()
 {
     renderer_->clear();
 
+    // draw bg
+    SDL_Rect camera;
+    camera.x = AABB::camera.getPos().x_;
+    camera.y = AABB::camera.getPos().y_;
+    camera.w = 600, camera.h = 600;
+    renderer_->renderBG(&camera);
+
     // draw player
     const Player* player = world_->getPlayer();
     SDL_Rect rect = player->getAABB().getRect();

@@ -24,7 +24,6 @@ void Renderer::initSprites(const std::string& spritesDir)
 {
     // Todo : replace thus ugly hardcode
     std::vector<std::string> spriteNames;
-    spriteNames.push_back("bg");
     spriteNames.push_back("player");
     spriteNames.push_back("enemy");
     spriteNames.push_back("bullet");
@@ -40,6 +39,10 @@ void Renderer::initSprites(const std::string& spritesDir)
         sprites_[spriteNames[i]] = new Sprite(spritesDir+"/"+spriteNames[i], "bmp", transparencyColor, sdlRenderer_);
         std::cout << "Successfully loaded " << spriteNames[i] << std::endl;
     }
+
+    spriteNames.push_back("bg");
+    sprites_[spriteNames.back()] = new Sprite(spritesDir+"/"+spriteNames.back(), "png", transparencyColor, sdlRenderer_);
+    std::cout << "Successfully loaded bg" << std::endl;
 }
 
 void Renderer::initMenuSprites(const std::string& menuSpritesDir)
@@ -58,6 +61,11 @@ void Renderer::initMenuSprites(const std::string& menuSpritesDir)
         menuSprites_[spriteNames[i]] = new Sprite(menuSpritesDir+"/"+spriteNames[i], "png", transparencyColor, sdlRenderer_);
         std::cout << "Successfully loaded " << spriteNames[i] << std::endl;
     }
+}
+
+void Renderer::renderBG(const SDL_Rect* camera)
+{
+    SDL_RenderCopy(sdlRenderer_, sprites_["bg"]->get(), camera, NULL);
 }
 
 void Renderer::renderSprite(const SDL_Rect* AABB, const std::string& spriteName)

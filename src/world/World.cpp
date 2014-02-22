@@ -8,7 +8,7 @@
 World::World() :
     worldWidth_(600),
     worldHeight_(2400),
-    scrollingSpeed_(10.0f),
+    scrollingSpeed_(20.0f),
     isScrolling_(true)
 {
     cameraScrolling_ = Vector2f(0.0f,-scrollingSpeed_/ProgramConstants::getInstance().getFps());
@@ -34,12 +34,12 @@ void World::setupLevel()
     aiManager_->setPlayer(player_);
 
     //createAIEnemyByModel(400, 700);
-    createAIEnemyByModel(100, 1900, "default", "1");
-    createAIEnemyByModel(300, 1900, "default", "1");
-    createAIEnemyByModel(500, 1900, "default", "1");
+    createAIEnemyByModel(100, 1900, "1", "1");
+    createAIEnemyByModel(300, 1900, "1", "1");
+    createAIEnemyByModel(500, 1900, "1", "1");
 
-    //createAIEnemyByModel(-50, 1300, "default", "2");
-    //createAIEnemyByModel(-50, 1400, "default", "2");
+    createAIEnemyByModel(-50, 1400, "2", "2");
+    createAIEnemyByModel(-50, 1500, "2", "2");
 
     //createEnemyByModel(300, 40, true);
     //createEnemyByModel(500, 200, true);

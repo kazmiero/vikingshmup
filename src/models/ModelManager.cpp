@@ -55,6 +55,8 @@ void ModelManager::createModels(std::map<std::string,AABB> spritesAABB)
     createPatterns();
 
     enemyModels_["default"] = new EnemyModel("enemy", spritesAABB["enemy"], 20.0f, getPatternModelByName("basic2"));
+    enemyModels_["1"] = new EnemyModel("enemy", spritesAABB["enemy"], 20.0f, getPatternModelByName("basic1"));
+    enemyModels_["2"] = new EnemyModel("enemy", spritesAABB["enemy"], 30.0f, getPatternModelByName("basic2"));
 
     createAI();
 }
@@ -111,6 +113,6 @@ void ModelManager::createAI()
     points.clear();
     points.push_back(Vector2f(100,200));
     points.push_back(Vector2f(200,100));
-    aiModels_["2"] = new AIModel(false, KeyPositions, 500.0f, 0.0f);
+    aiModels_["2"] = new AIModel(false, Autofire, 700.0f, 0.0f);
     aiModels_["2"]->initPoints(points);
 }
