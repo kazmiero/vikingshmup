@@ -99,7 +99,7 @@ void ModelManager::createPatterns()
     angles.clear();
     angles.push_back(-10.0f);
     angles.push_back(10.0f);
-    patternModels_["basic2"] = new PatternModel(7.0f, 1.2f, 240.0f, 1, bullet);
+    patternModels_["basic2"] = new PatternModel(7.0f, 1.0f, 240.0f, 1, bullet);
     patternModels_["basic2"]->init(angles, true);
 }
 
@@ -113,6 +113,12 @@ void ModelManager::createAI()
     points.clear();
     points.push_back(Vector2f(100,200));
     points.push_back(Vector2f(200,100));
-    aiModels_["2"] = new AIModel(false, Autofire, 700.0f, 0.0f);
+    aiModels_["2"] = new AIModel(false, NearPlayer, 700.0f, 400.0f);
     aiModels_["2"]->initPoints(points);
+
+    points.clear();
+    points.push_back(Vector2f(-100,200));
+    points.push_back(Vector2f(-200,100));
+    aiModels_["2bis"] = new AIModel(false, NearPlayer, 700.0f, 400.0f);
+    aiModels_["2bis"]->initPoints(points);
 }

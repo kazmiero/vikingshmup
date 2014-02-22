@@ -41,6 +41,9 @@ void World::setupLevel()
     createAIEnemyByModel(-50, 1400, "2", "2");
     createAIEnemyByModel(-50, 1500, "2", "2");
 
+    createAIEnemyByModel(650, 1400, "2", "2bis");
+    createAIEnemyByModel(650, 1500, "2", "2bis");
+
     //createEnemyByModel(300, 40, true);
     //createEnemyByModel(500, 200, true);
 }
