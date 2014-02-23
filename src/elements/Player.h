@@ -30,6 +30,9 @@ class Player : public Entity
         const std::string& getCannonSpriteName() const;
     protected:
     private:
+        /// triangle collision model (!!! specific to the actual sprite)
+        void initCollisionModel();
+
         AABB cannonAABB_;
         std::string cannonSpriteName_;
         Vector2f relativeCannonRotationCenter_;

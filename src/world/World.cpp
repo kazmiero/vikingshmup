@@ -201,6 +201,8 @@ void World::update()
 
 bool World::doCollisionCheck()
 {
+    const Polygon* playerPolygon = dynamic_cast<const Polygon*>(player_->getCollisionModel());
+
     elementsToDraw_.clear();
 
     for (std::list<Enemy*>::iterator enemyIt = enemies_.begin(); enemyIt != enemies_.end(); ++enemyIt)
@@ -218,7 +220,7 @@ bool World::doCollisionCheck()
 
         playerCollisionWithObstacle = playerCollisionWithObstacle
                 //|| collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
-                || collisionHandler_->twoPolygonsCollisionCheck(OBB(player_->getAABB()), *obb);
+                || collisionHandler_->twoPolygonsCollisionCheck(*playerPolygon, *obb);
 
         if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
             elementsToDraw_.push_back(elements_[elementIndex]);
@@ -325,13 +327,15 @@ void World::doBulletCollisionCheck()
 
 bool World::doEnemyBulletCollisionCheck()
 {
+    const Polygon* playerPolygon = dynamic_cast<const Polygon*>(player_->getCollisionModel());
+
    for (std::list<Bullet*>::iterator bulletIt = enemyBullets_.begin(); bulletIt != enemyBullets_.end(); ++bulletIt)
     {
         Bullet* bullet = *bulletIt;
         const Circle* circle = dynamic_cast<const Circle*>(bullet->getCollisionModel());
         Uint32 bulletCollision = 0;
 
-        bool bulletOnPlayer = collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), bullet->getAABB());
+        bool bulletOnPlayer = collisionHandler_->twoPolygonsCollisionCheck(*playerPolygon, OBB(bullet->getAABB()));
         if (bulletOnPlayer)
         {
             enemyBullets_.erase(bulletIt);
