@@ -33,16 +33,30 @@ void World::setupLevel()
     spawnPlayer(300, 2350);
     aiManager_->setPlayer(player_);
 
-    //createAIEnemyByModel(400, 700);
+    // 1st phase
     createAIEnemyByModel(100, 1900, "1", "1");
     createAIEnemyByModel(300, 1900, "1", "1");
     createAIEnemyByModel(500, 1900, "1", "1");
 
+    // 2nd phase
+    createAIEnemyByModel(-50, 1300, "2", "2");
     createAIEnemyByModel(-50, 1400, "2", "2");
-    createAIEnemyByModel(-50, 1500, "2", "2");
-
+    createAIEnemyByModel(650, 1300, "2", "2bis");
     createAIEnemyByModel(650, 1400, "2", "2bis");
-    createAIEnemyByModel(650, 1500, "2", "2bis");
+
+    // 3rd phase
+    createObstacleByModel(300, 1000, 0.0, "default");
+    createEnemyByModel(150, 800, true, "3");
+    createEnemyByModel(450, 800, true, "3");
+
+    // 4th phase
+    createObstacleByModel(300, 300, 0.0, "default");
+    createObstacleByModel(150, 400, 45.0, "default");
+    createObstacleByModel(450, 400, -45.0, "default");
+    createAIEnemyByModel(50, 200, "4", "4");
+    createAIEnemyByModel(550, 200, "4", "4bis");
+
+
 
     //createEnemyByModel(300, 40, true);
     //createEnemyByModel(500, 200, true);
@@ -295,7 +309,7 @@ void World::doBulletCollisionCheck()
             }
         }
 
-        if (bulletCollision == 2 ||!bullet->lives())
+        if (!collisionHandler_->isInCamera(bullet->getAABB()) ||bulletCollision == 2 ||!bullet->lives())
         {
             bulletIt = playerBullets_.erase(bulletIt);
         }
@@ -341,7 +355,7 @@ bool World::doEnemyBulletCollisionCheck()
             }
         }
 
-        if (bulletCollision == 2 ||!bullet->lives())
+        if (!collisionHandler_->isInCamera(bullet->getAABB()) ||bulletCollision == 2 ||!bullet->lives())
         {
             bulletIt = enemyBullets_.erase(bulletIt);
         }

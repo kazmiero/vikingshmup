@@ -57,6 +57,8 @@ void ModelManager::createModels(std::map<std::string,AABB> spritesAABB)
     enemyModels_["default"] = new EnemyModel("enemy", spritesAABB["enemy"], 20.0f, getPatternModelByName("basic2"));
     enemyModels_["1"] = new EnemyModel("enemy", spritesAABB["enemy"], 20.0f, getPatternModelByName("basic1"));
     enemyModels_["2"] = new EnemyModel("enemy", spritesAABB["enemy"], 30.0f, getPatternModelByName("basic2"));
+    enemyModels_["3"] = new EnemyModel("enemy", spritesAABB["enemy"], 30.0f, getPatternModelByName("circle"));
+    enemyModels_["4"] = new EnemyModel("enemy", spritesAABB["enemy"], 30.0f, getPatternModelByName("arcOfCircle"));
 
     createAI();
 }
@@ -121,4 +123,20 @@ void ModelManager::createAI()
     points.push_back(Vector2f(-200,100));
     aiModels_["2bis"] = new AIModel(false, NearPlayer, 700.0f, 400.0f);
     aiModels_["2bis"]->initPoints(points);
+
+    points.clear();
+    points.push_back(Vector2f(100, 0));
+    points.push_back(Vector2f(50, 100));
+    points.push_back(Vector2f(-50, -100));
+    points.push_back(Vector2f(-100, 0));
+    aiModels_["4"] = new AIModel(true, KeyPositions, 500.0f, 0.0f);
+    aiModels_["4"]->initPoints(points);
+
+    points.clear();
+    points.push_back(Vector2f(-100, 0));
+    points.push_back(Vector2f(-50, 100));
+    points.push_back(Vector2f(50, -100));
+    points.push_back(Vector2f(100, 0));
+    aiModels_["4bis"] = new AIModel(true, KeyPositions, 500.0f, 0.0f);
+    aiModels_["4bis"]->initPoints(points);
 }
