@@ -25,6 +25,7 @@ $(OBJ_SUBDIR): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 setup:
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(BINDIR)
+	@mkdir -p $(OBJDIR)/ai
 	@mkdir -p $(OBJDIR)/display
 	@mkdir -p $(OBJDIR)/elements
 	@mkdir -p $(OBJDIR)/events
