@@ -17,6 +17,8 @@ class InputManager
         bool eventLoop();
         events::InputEvent menuEventLoop();
 
+        void clearSdlEvents();
+
         void clearEvents();
         const std::vector<events::InputEvent>& getEvents() const;
     protected:

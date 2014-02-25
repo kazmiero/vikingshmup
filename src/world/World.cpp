@@ -375,6 +375,11 @@ bool World::doEnemyBulletCollisionCheck()
     return false;
 }
 
+bool World::victory()
+{
+    return enemies_.empty() && !isScrolling_;
+}
+
 void World::addInputEvent(events::InputEvent event)
 {
     events_.push_back(event);

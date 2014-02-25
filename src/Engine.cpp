@@ -63,10 +63,17 @@ TitleMenuItem Engine::titleMenu()
 void Engine::play()
 {
     world_->setupLevel();
-    gameLoop();
+    bool win = gameLoop();
 
-    // Todo: replace this by something clean
     world_->clearElements();
+
+    if (!win)
+    {
+        renderTextScreen("gameover",2.0f);
+        // avoid using enter/esc during gameover screen
+        inputManager_->clearSdlEvents();
+    }
+
 }
 
 bool Engine::initSDL()
@@ -129,30 +136,40 @@ void Engine::dummyDrawing()
 	SDL_Delay(2000);
 }
 
-void Engine::gameLoop()
+bool Engine::gameLoop()
 {
     while(true)
     {
         fpsTimer_->reset();
         fpsTimer_->start();
 
+        inputManager_->clearEvents();
         // get events
         if (!inputManager_->eventLoop())
-            return;
+            return false;
         pushCommands();
 
         // world & physics
         world_->update();
         if (world_->doCollisionCheck())
-            return;
+            return false;
         world_->scroll();
 
         // graphics
         renderWorld();
 
-        inputManager_->clearEvents();
         // trick for the relative mode in linux
         SDL_WarpMouseInWindow(gameWindow_, ProgramConstants::getInstance().getCameraWidth()/2, ProgramConstants::getInstance().getCameraHeight()/2);
+
+        if (world_->victory())
+        {
+            // Todo(laaaaater) : replace the delay by a fancy animation
+            SDL_Delay(2000);
+            renderTextScreen("levelcleared",2.0f);
+            // avoid using enter/esc during gameover screen
+            inputManager_->clearSdlEvents();
+            return true;
+        }
 
         fpsTimer_->pause();
         Uint32 delay = fpsTimer_->getWaitingTime();
@@ -160,6 +177,7 @@ void Engine::gameLoop()
         SDL_Delay(delay);
         //std::cout << delay << std::endl;
     }
+
 }
 
 void Engine::renderWorld()
@@ -216,6 +234,21 @@ void Engine::renderTitleMenu(TitleMenuItem selectedMenuItem)
     renderer_->renderMenuSprite(&rect, "exit");
 
     renderer_->sendToFramebuffer();
+}
+
+void Engine::renderTextScreen(const std::string& spritename, float duration)
+{
+    renderer_->clear();
+
+    const Sprite* gameover = renderer_->getMenuSprites().at(spritename);
+    SDL_Rect rect;
+    rect.x = 100, rect.y = 250, rect.h = gameover->getH(), rect.w = gameover->getW();
+    renderer_->renderMenuSprite(&rect,spritename);
+
+    renderer_->sendToFramebuffer();
+
+    Uint32 millisDelay = (Uint32) (duration * 1000.0f);
+    SDL_Delay(millisDelay);
 }
 
 void Engine::pushCommands()

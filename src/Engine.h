@@ -28,11 +28,12 @@ class Engine
         void play();
         TitleMenuItem titleMenu();
 
-        void gameLoop();
+        bool gameLoop();
         void renderWorld();
         void pushCommands();
 
         void renderTitleMenu(TitleMenuItem selectedMenuItem);
+        void renderTextScreen(const std::string& spriteName, float duration);
 
     private:
         SDL_Window* gameWindow_;

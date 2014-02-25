@@ -113,3 +113,13 @@ void InputManager::clearEvents()
 {
     events_.clear();
 }
+
+void InputManager::clearSdlEvents()
+{
+    SDL_Event event;
+
+    while(SDL_PollEvent(&event))
+    {
+        // do nothing
+    }
+}

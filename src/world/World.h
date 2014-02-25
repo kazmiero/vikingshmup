@@ -30,6 +30,7 @@ class World
         bool doCollisionCheck();
         void doBulletCollisionCheck();
         bool doEnemyBulletCollisionCheck();
+        bool victory();
         void scroll();
 
         void spawnPlayer(int x, int y);
