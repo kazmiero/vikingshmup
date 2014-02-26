@@ -50,6 +50,8 @@ class World
         const std::vector<const Element*>& getElementsToDraw();
 
     private:
+        bool enemiesInCamera();
+
         // constant data
         std::map<std::string,AABB> spritesAABB_;
         const int worldWidth_, worldHeight_;

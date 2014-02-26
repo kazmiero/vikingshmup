@@ -29,6 +29,7 @@ void Renderer::initSprites(const std::string& spritesDir)
     spriteNames.push_back("bullet");
     spriteNames.push_back("bullet_enemy");
     spriteNames.push_back("obstacle");
+    spriteNames.push_back("obstacle-long");
     spriteNames.push_back("cannon");
 
     SDL_Color transparencyColor;
@@ -41,7 +42,7 @@ void Renderer::initSprites(const std::string& spritesDir)
     }
 
     spriteNames.push_back("bg");
-    sprites_[spriteNames.back()] = new Sprite(spritesDir+"/"+spriteNames.back(), "png", transparencyColor, sdlRenderer_);
+    sprites_[spriteNames.back()] = new Sprite(spritesDir+"/"+spriteNames.back()+"2", "png", transparencyColor, sdlRenderer_);
     std::cout << "Successfully loaded bg" << std::endl;
 }
 

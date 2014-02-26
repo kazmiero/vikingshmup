@@ -7,7 +7,7 @@
 
 World::World() :
     worldWidth_(600),
-    worldHeight_(2400),
+    worldHeight_(3600),
     scrollingSpeed_(20.0f),
     isScrolling_(true)
 {
@@ -28,35 +28,54 @@ void World::setupLevel()
     const float cameraWidth = ProgramConstants::getInstance().getCameraWidth();
 
     AABB::camera = AABB(0,worldHeight_-cameraHeight,cameraWidth,cameraHeight);
+    //AABB::camera = AABB(0,1300-cameraHeight,cameraWidth,cameraHeight);
     collisionHandler_ = new CollisionHandler();
 
-    spawnPlayer(300, 2350);
+    spawnPlayer(300, 3550);
     aiManager_->setPlayer(player_);
 
     // 1st phase
-    createAIEnemyByModel(100, 1900, "1", "1");
-    createAIEnemyByModel(300, 1900, "1", "1");
-    createAIEnemyByModel(500, 1900, "1", "1");
+    createAIEnemyByModel(100, 3100, "1", "1");
+    createAIEnemyByModel(300, 3100, "1", "1");
+    createAIEnemyByModel(500, 3100, "1", "1");
 
     // 2nd phase
-    createAIEnemyByModel(-50, 1300, "2", "2");
-    createAIEnemyByModel(-50, 1400, "2", "2");
-    createAIEnemyByModel(650, 1300, "2", "2bis");
-    createAIEnemyByModel(650, 1400, "2", "2bis");
+    createAIEnemyByModel(-50, 2500, "2", "2");
+    createAIEnemyByModel(-50, 2600, "2", "2");
+    createAIEnemyByModel(650, 2500, "2", "2bis");
+    createAIEnemyByModel(650, 2600, "2", "2bis");
 
     // 3rd phase
-    createObstacleByModel(300, 1000, 0.0, "default");
-    createEnemyByModel(150, 800, true, "3");
-    createEnemyByModel(450, 800, true, "3");
+    createObstacleByModel(300, 2200, 0.0, "default");
+    createEnemyByModel(150, 2000, true, "3");
+    createEnemyByModel(450, 2000, true, "3");
 
     // 4th phase
-    createObstacleByModel(300, 300, 0.0, "default");
-    createObstacleByModel(150, 400, 45.0, "default");
-    createObstacleByModel(450, 400, -45.0, "default");
-    createAIEnemyByModel(50, 200, "4", "4");
-    createAIEnemyByModel(550, 200, "4", "4bis");
+    createObstacleByModel(300, 1500, 0.0, "default");
+    createObstacleByModel(150, 1600, 45.0, "default");
+    createObstacleByModel(450, 1600, -45.0, "default");
+    createAIEnemyByModel(50, 1400, "4", "4");
+    createAIEnemyByModel(550, 1400, "4", "4bis");
 
+    // 5th phase -- rampage!!
+    createObstacleByModel(100, 850, 90.0, "long");
+    createObstacleByModel(500, 880, 90.0, "long");
 
+    createObstacleByModel(250, 900, 0.0, "default");
+    createObstacleByModel(340, 900, 0.0, "default");
+
+    createEnemyByModel(300, 800, true, "5");
+    createEnemyByModel(300, 710, true, "5");
+
+    createAIEnemyByModel(560, 400, "1", "1");
+    createAIEnemyByModel(430, 400, "1", "1");
+    createAIEnemyByModel(40, 400, "1", "1");
+    createAIEnemyByModel(150, 400, "1", "1");
+
+    createAIEnemyByModel(60, 150, "2", "5");
+    createAIEnemyByModel(540, 150, "2", "5bis");
+
+    createAIEnemyByModel(240, 100, "6", "5");
 
     //createEnemyByModel(300, 40, true);
     //createEnemyByModel(500, 200, true);
@@ -222,7 +241,7 @@ bool World::doCollisionCheck()
                 //|| collisionHandler_->twoAABBCollisionCheck(player_->getAABB(), elements_[elementIndex]->getAABB());
                 || collisionHandler_->twoPolygonsCollisionCheck(*playerPolygon, *obb);
 
-        if(collisionHandler_->isInCamera(elements_[elementIndex]->getAABB()))
+        if(collisionHandler_->isInCamera(elements_[elementIndex]->getCollisionModel()->getBoundingAABB()))
             elementsToDraw_.push_back(elements_[elementIndex]);
     }
 
@@ -377,7 +396,22 @@ bool World::doEnemyBulletCollisionCheck()
 
 bool World::victory()
 {
-    return enemies_.empty() && !isScrolling_;
+    if (isScrolling_)
+        return false;
+    else
+        return !enemiesInCamera() && enemyBullets_.empty();
+}
+
+bool World::enemiesInCamera()
+{
+    for (std::list<Enemy*>::iterator it = enemies_.begin(); it != enemies_.end(); ++it)
+    {
+        Enemy* enemy = *it;
+        if (collisionHandler_->isInCamera(enemy->getAABB()))
+            return true;
+    }
+
+    return false;
 }
 
 void World::addInputEvent(events::InputEvent event)

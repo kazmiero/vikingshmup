@@ -163,6 +163,7 @@ bool Engine::gameLoop()
 
         if (world_->victory())
         {
+            renderWorld();
             // Todo(laaaaater) : replace the delay by a fancy animation
             SDL_Delay(2000);
             renderTextScreen("levelcleared",2.0f);
