@@ -55,6 +55,11 @@ void Renderer::initMenuSprites(const std::string& menuSpritesDir)
     spriteNames.push_back("continue");
     spriteNames.push_back("gameover");
     spriteNames.push_back("levelcleared");
+    spriteNames.push_back("command1");
+    spriteNames.push_back("command2");
+    spriteNames.push_back("command3");
+    spriteNames.push_back("command4");
+    spriteNames.push_back("title");
 
     SDL_Color transparencyColor;
     transparencyColor.r = 0, transparencyColor.g = 0, transparencyColor.b = 0, transparencyColor.a = 0;

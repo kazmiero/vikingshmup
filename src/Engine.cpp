@@ -217,13 +217,17 @@ void Engine::renderTitleMenu(TitleMenuItem selectedMenuItem)
 {
     renderer_->clear();
 
+    const Sprite* title = renderer_->getMenuSprites().at("title");
+    SDL_Rect rect;
+    rect.x = 0, rect.y = 0, rect.h = title->getH(), rect.w = title->getW();
+    renderer_->renderMenuSprite(&rect,"title");
+
     const Sprite* start = renderer_->getMenuSprites().at("start");
     if (selectedMenuItem == Start)
         SDL_SetTextureColorMod(start->get(), 255, 0, 0);
     else
         SDL_SetTextureColorMod(start->get(), 255, 255, 255);
-    SDL_Rect rect;
-    rect.x = 100, rect.y = 200, rect.h = start->getH(), rect.w = start->getW();
+    rect.x = 100, rect.y = 260, rect.h = start->getH(), rect.w = start->getW();
     renderer_->renderMenuSprite(&rect,"start");
 
     const Sprite* exit = renderer_->getMenuSprites().at("exit");
@@ -231,8 +235,18 @@ void Engine::renderTitleMenu(TitleMenuItem selectedMenuItem)
         SDL_SetTextureColorMod(exit->get(), 255, 0, 0);
     else
         SDL_SetTextureColorMod(exit->get(), 255, 255, 255);
-    rect.x = 100, rect.y = 300, rect.h = exit->getH(), rect.w = exit->getW();
+    rect.x = 100, rect.y = 330, rect.h = exit->getH(), rect.w = exit->getW();
     renderer_->renderMenuSprite(&rect, "exit");
+
+    const Sprite* command = renderer_->getMenuSprites().at("command1");
+    rect.x = 0, rect.y = 400, rect.h = command->getH(), rect.w = command->getW();
+    renderer_->renderMenuSprite(&rect, "command1");
+    rect.y = 450;
+    renderer_->renderMenuSprite(&rect, "command2");
+    rect.y = 500;
+    renderer_->renderMenuSprite(&rect, "command3");
+    rect.y = 550;
+    renderer_->renderMenuSprite(&rect, "command4");
 
     renderer_->sendToFramebuffer();
 }
